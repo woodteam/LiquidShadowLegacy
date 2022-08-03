@@ -177,8 +177,9 @@ class ModuleManager : Listenable {
                 ResourcePackSpoof::class.java,
                 NoSlowBreak::class.java,
                 PortalMenu::class.java,
-                HUDEditor::class.java,
-                AntiVoid::class.java
+            HUDEditor::class.java,
+            AntiVoid::class.java,
+            FPSHurtCam::class.java
         )
 
         registerModule(NoScoreboard)

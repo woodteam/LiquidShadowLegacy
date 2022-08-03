@@ -14,6 +14,7 @@ import net.ccbluex.liquidbounce.ui.client.hud.element.Side
 import net.ccbluex.liquidbounce.ui.font.Fonts
 import net.ccbluex.liquidbounce.utils.render.AnimationUtils
 import net.ccbluex.liquidbounce.utils.render.RenderUtils
+import net.ccbluex.liquidbounce.value.IntegerValue
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
@@ -27,14 +28,16 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
     /**
      * Example notification for CustomHUD designer
      */
-    private val exampleNotification = Notification("Example Notification")
+    private val exampleNotification = Notification("Example Notification",NormalType())
+
+    private val backgroundAlphaValue = IntegerValue("backgroundAlpha",60,0,255)
 
     /**
      * Draw element
      */
     override fun drawElement(): Border? {
         if (LiquidBounce.hud.notifications.size > 0)
-            LiquidBounce.hud.notifications[0].drawNotification()
+            LiquidBounce.hud.notifications[0].drawNotification(backgroundAlphaValue.get())
 
         if (mc.currentScreen is GuiHudDesigner) {
             if (!LiquidBounce.hud.notifications.contains(exampleNotification))
@@ -51,7 +54,7 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
 
 }
 
-class Notification(private val message: String) {
+class Notification(private val message: String,private val notificationType: NotificationType) {
     var x = 0F
     var textLength = 0
 
@@ -71,10 +74,18 @@ class Notification(private val message: String) {
     /**
      * Draw notification
      */
-    fun drawNotification() {
+    fun drawNotification(backgroundAlpha:Int) {
         // Draw notification
-        RenderUtils.drawRect(-x + 8 + textLength, 0F, -x, -20F, Color.BLACK.rgb)
-        RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(0, 160, 255).rgb)
+        RenderUtils.drawRect(-x + 8 + textLength, 0F, -x, -20F, Color(0,0,0,backgroundAlpha).rgb)
+        if (notificationType is NormalType)
+            RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(65, 215, 255).rgb)
+        else if (notificationType is ToggleType)
+            if (notificationType.getModuleState()) {
+                RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(80, 255, 80).rgb)
+            } else if (!notificationType.getModuleState()) {
+                RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(255,80,80).rgb)
+            }
+
         Fonts.font35.drawString(message, -x + 4, -14F, Int.MAX_VALUE)
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
 
@@ -113,3 +124,12 @@ class Notification(private val message: String) {
     }
 }
 
+open class NotificationType
+
+class NormalType : net.ccbluex.liquidbounce.ui.client.hud.element.elements.NotificationType()
+
+class ToggleType(private val moduleName:String,private val moduleState:Boolean) : NotificationType() {
+    fun getModuleName() : String { return moduleName }
+
+    fun getModuleState() : Boolean { return moduleState }
+}
