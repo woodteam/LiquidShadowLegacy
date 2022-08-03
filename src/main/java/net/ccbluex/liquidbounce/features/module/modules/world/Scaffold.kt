@@ -47,7 +47,7 @@ import kotlin.math.*
     name = "Scaffold",
     description = "Automatically places blocks beneath your feet.",
     category = ModuleCategory.WORLD,
-    keyBind = Keyboard.KEY_I
+    keyBind = Keyboard.KEY_G
 )
 class Scaffold : Module() {
 

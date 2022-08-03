@@ -176,7 +176,9 @@ class ModuleManager : Listenable {
                 KeepAlive::class.java,
                 ResourcePackSpoof::class.java,
                 NoSlowBreak::class.java,
-                PortalMenu::class.java
+                PortalMenu::class.java,
+                HUDEditor::class.java,
+                AntiVoid::class.java
         )
 
         registerModule(NoScoreboard)
