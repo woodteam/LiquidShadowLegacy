@@ -36,8 +36,18 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
      * Draw element
      */
     override fun drawElement(): Border? {
-        if (LiquidBounce.hud.notifications.size > 0)
-            LiquidBounce.hud.notifications[0].drawNotification(backgroundAlphaValue.get())
+        if (LiquidBounce.hud.notifications.size > 0) {
+            var i = 0
+            var y = 0F
+            for (notification in LiquidBounce.hud.notifications) {
+                LiquidBounce.hud.notifications[i].drawNotification(backgroundAlphaValue.get(),y)
+                i++
+                y += 30F
+            }
+
+        }
+            println(LiquidBounce.hud.notifications.size)
+
 
         if (mc.currentScreen is GuiHudDesigner) {
             if (!LiquidBounce.hud.notifications.contains(exampleNotification))
@@ -74,19 +84,19 @@ class Notification(private val message: String,private val notificationType: Not
     /**
      * Draw notification
      */
-    fun drawNotification(backgroundAlpha:Int) {
+    fun drawNotification(backgroundAlpha:Int,y: Float) {
         // Draw notification
-        RenderUtils.drawRect(-x + 8 + textLength, 0F, -x, -20F, Color(0,0,0,backgroundAlpha).rgb)
+        RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(0,0,0,backgroundAlpha).rgb)
         if (notificationType is NormalType)
-            RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(65, 215, 255).rgb)
+            RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(65, 215, 255).rgb)
         else if (notificationType is ToggleType)
             if (notificationType.getModuleState()) {
-                RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(80, 255, 80).rgb)
+                RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(80, 255, 80).rgb)
             } else if (!notificationType.getModuleState()) {
-                RenderUtils.drawRect(-x, 0F, -x - 5, -20F, Color(255,80,80).rgb)
+                RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(255,80,80).rgb)
             }
 
-        Fonts.font35.drawString(message, -x + 4, -14F, Int.MAX_VALUE)
+        Fonts.font35.drawString(message, -x + 4, -y + -14F, Int.MAX_VALUE)
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
 
         // Animation
@@ -121,6 +131,7 @@ class Notification(private val message: String,private val notificationType: Not
 
             FadeState.END -> LiquidBounce.hud.removeNotification(this)
         }
+
     }
 }
 
