@@ -180,6 +180,7 @@ class ModuleManager : Listenable {
             HUDEditor::class.java,
             AntiVoid::class.java,
             FPSHurtCam::class.java,
+            AntiStuck::class.java
         )
 
         registerModule(NoScoreboard)
