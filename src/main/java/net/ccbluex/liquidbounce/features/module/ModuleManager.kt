@@ -179,7 +179,7 @@ class ModuleManager : Listenable {
                 PortalMenu::class.java,
             HUDEditor::class.java,
             AntiVoid::class.java,
-            FPSHurtCam::class.java
+            FPSHurtCam::class.java,
         )
 
         registerModule(NoScoreboard)

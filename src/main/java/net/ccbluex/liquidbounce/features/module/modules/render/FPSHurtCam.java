@@ -20,7 +20,7 @@ public class FPSHurtCam extends Module {
     private final IntegerValue gValue = new IntegerValue("G",80,0,255);
     private final IntegerValue bValue = new IntegerValue("B",80,0,255);
     private final IntegerValue alphaValue = new IntegerValue("Alpha",100,0,255);
-    private final FloatValue heightValue = new FloatValue("Height",20,0,50);
+    private final FloatValue heightValue = new FloatValue("Height",35,0,50);
 
     @EventTarget
     public void onRender2D(Render2DEvent render2DEvent) {
