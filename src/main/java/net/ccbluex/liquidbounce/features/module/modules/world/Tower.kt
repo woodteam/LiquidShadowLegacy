@@ -61,6 +61,7 @@ class Tower : Module() {
         "Motion"
     )
     private val autoBlockValue = ListValue("AutoBlock", arrayOf("Off", "Pick", "Spoof", "Switch"), "Spoof")
+    private val randomSlotValue = BoolValue("RandomSlot",true)
     private val swingValue = BoolValue("Swing", true)
     private val stopWhenBlockAbove = BoolValue("StopWhenBlockAbove", false)
     private val rotationsValue = BoolValue("Rotations", true)
@@ -143,7 +144,7 @@ class Tower : Module() {
             timer.update()
 
             val update = if (!autoBlockValue.get().equals("Off", ignoreCase = true)) {
-                InventoryUtils.findAutoBlockBlock() != -1 || thePlayer.heldItem != null && thePlayer.heldItem!!.item is ItemBlock
+                InventoryUtils.findAutoBlockBlock(randomSlotValue.get()) != -1 || thePlayer.heldItem != null && thePlayer.heldItem!!.item is ItemBlock
             } else {
                 thePlayer.heldItem != null && thePlayer.heldItem!!.item is ItemBlock
             }
@@ -274,7 +275,7 @@ class Tower : Module() {
         // AutoBlock
         var itemStack = thePlayer.heldItem
         if (itemStack == null || itemStack.item !is ItemBlock || (itemStack.item as ItemBlock).block is BlockBush) {
-            val blockSlot = InventoryUtils.findAutoBlockBlock()
+            val blockSlot = InventoryUtils.findAutoBlockBlock(randomSlotValue.get())
 
             if (blockSlot == -1) return
 
