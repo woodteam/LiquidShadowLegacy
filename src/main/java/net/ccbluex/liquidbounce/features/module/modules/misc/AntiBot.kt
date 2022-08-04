@@ -5,15 +5,16 @@
  */
 package net.ccbluex.liquidbounce.features.module.modules.misc
 
-import net.ccbluex.liquidbounce.event.AttackEvent
-import net.ccbluex.liquidbounce.event.EventTarget
-import net.ccbluex.liquidbounce.event.PacketEvent
-import net.ccbluex.liquidbounce.event.WorldEvent
+import net.ccbluex.liquidbounce.LiquidBounce
+import net.ccbluex.liquidbounce.event.*
 import net.ccbluex.liquidbounce.features.module.Module
 import net.ccbluex.liquidbounce.features.module.ModuleCategory
 import net.ccbluex.liquidbounce.features.module.ModuleInfo
+import net.ccbluex.liquidbounce.ui.client.hud.element.elements.NormalType
+import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification
 import net.ccbluex.liquidbounce.utils.extensions.getFullName
 import net.ccbluex.liquidbounce.utils.render.ColorUtils.stripColor
+import net.ccbluex.liquidbounce.utils.timer.MSTimer
 import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
 import net.ccbluex.liquidbounce.value.IntegerValue
@@ -21,6 +22,7 @@ import net.ccbluex.liquidbounce.value.ListValue
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.network.play.server.S0BPacketAnimation
+import net.minecraft.network.play.server.S0CPacketSpawnPlayer
 import net.minecraft.network.play.server.S14PacketEntity
 
 @ModuleInfo(name = "AntiBot", description = "Prevents KillAura from attacking AntiCheat bots.", category = ModuleCategory.MISC)
@@ -46,6 +48,10 @@ object AntiBot : Module() {
     private val duplicateInTabValue = BoolValue("DuplicateInTab", false)
     private val allwaysInRadiusValue = BoolValue("AlwaysInRadius", false)
     private val allwaysRadiusValue = FloatValue("AlwaysInRadiusBlocks", 20f, 5f, 30f)
+    private val spawnWhenCombatValue = BoolValue("SpawnWhenCombat",true)
+
+    private val removeBotsValue = BoolValue("RemoveBots",true)
+    private val removeNotificationValue = BoolValue("RemoveNotification",true)
 
     private val ground = mutableListOf<Int>()
     private val air = mutableListOf<Int>()
@@ -54,6 +60,10 @@ object AntiBot : Module() {
     private val invisible = mutableListOf<Int>()
     private val hitted = mutableListOf<Int>()
     private val notAlwaysInRadius = mutableListOf<Int>()
+    private val spawnWhenCombat = mutableListOf<Int>()
+
+    private var inCombat = false
+    private var lastAttackTime = MSTimer()
 
     @JvmStatic // TODO: Remove as soon EntityUtils is translated to kotlin
     fun isBot(entity: EntityLivingBase): Boolean {
@@ -138,6 +148,9 @@ object AntiBot : Module() {
         if (allwaysInRadiusValue.get() && !notAlwaysInRadius.contains(entity.entityId))
             return true
 
+        if (spawnWhenCombatValue.get() && spawnWhenCombat.contains(entity.entityId))
+            return true
+
         return entity.name!!.isEmpty() || entity.name == mc.thePlayer!!.name
     }
 
@@ -189,6 +202,12 @@ object AntiBot : Module() {
                     && !swing.contains(entity.entityId))
                 swing.add(entity.entityId)
         }
+
+        if (packet is S0CPacketSpawnPlayer) {
+            if (inCombat) {
+                spawnWhenCombat.add(packet.entityID)
+            }
+        }
     }
 
     @EventTarget
@@ -197,11 +216,29 @@ object AntiBot : Module() {
 
         if (entity != null && entity is EntityLivingBase && !hitted.contains(entity.entityId))
             hitted.add(entity.entityId)
+
+        lastAttackTime.reset()
     }
 
     @EventTarget
     fun onWorld(event: WorldEvent?) {
         clearAll()
+    }
+
+    @EventTarget
+    fun onUpdate(event:UpdateEvent) {
+        if (removeBotsValue.get()) {
+            for (entity in mc.theWorld.loadedEntityList) {
+                if (entity is EntityLivingBase && isBot(entity) && entity != mc.thePlayer) {
+                    mc.theWorld.removeEntityFromWorld(entity.entityId)
+                    if (removeNotificationValue.get()) {
+                        LiquidBounce.hud.addNotification(Notification(entity.name + " is a bot!",NormalType()))
+                    }
+                }
+            }
+        }
+        inCombat = !lastAttackTime.hasTimePassed(1000)
+
     }
 
     private fun clearAll() {
@@ -211,6 +248,7 @@ object AntiBot : Module() {
         invalidGround.clear()
         invisible.clear()
         notAlwaysInRadius.clear();
+        spawnWhenCombat.clear()
     }
 
 }

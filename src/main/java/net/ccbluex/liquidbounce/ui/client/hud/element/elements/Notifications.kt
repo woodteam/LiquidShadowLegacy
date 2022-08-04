@@ -46,7 +46,6 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
             }
 
         }
-            println(LiquidBounce.hud.notifications.size)
 
 
         if (mc.currentScreen is GuiHudDesigner) {
