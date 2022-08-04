@@ -21,6 +21,7 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public final class InventoryUtils extends MinecraftInstance implements Listenable {
 
@@ -69,16 +70,48 @@ public final class InventoryUtils extends MinecraftInstance implements Listenabl
         return false;
     }
 
-    public static int findAutoBlockBlock() {
-        for (int i = 36; i < 45; i++) {
-            final ItemStack itemStack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+    public static int findAutoBlockBlock(boolean chooseRandom) {
+        if (chooseRandom) {
+            int blocksExists = 0;
+            for (int i = 36; i < 45; i++) {
+                final ItemStack itemStack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
 
-            if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
-                final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
-                final Block block = itemBlock.getBlock();
+                if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
+                    final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
+                    final Block block = itemBlock.getBlock();
 
-                if (block.isFullCube() && !BLOCK_BLACKLIST.contains(block) && !(block instanceof BlockBush))
-                    return i;
+                    if (block.isFullCube() && !BLOCK_BLACKLIST.contains(block) && !(block instanceof BlockBush))
+                        blocksExists++;
+                }
+            }
+            int blockShouldChoose = new Random().nextInt(blocksExists + 1);
+            int j = 0;
+            for (int i = 36; i < 45; i++) {
+                final ItemStack itemStack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+
+                if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
+                    final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
+                    final Block block = itemBlock.getBlock();
+
+                    if (block.isFullCube() && !BLOCK_BLACKLIST.contains(block) && !(block instanceof BlockBush)) {
+                        j++;
+                        if (j == blockShouldChoose) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 36; i < 45; i++) {
+                final ItemStack itemStack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
+
+                if (itemStack != null && itemStack.getItem() instanceof ItemBlock && itemStack.stackSize > 0) {
+                    final ItemBlock itemBlock = (ItemBlock) itemStack.getItem();
+                    final Block block = itemBlock.getBlock();
+
+                    if (block.isFullCube() && !BLOCK_BLACKLIST.contains(block) && !(block instanceof BlockBush))
+                        return i;
+                }
             }
         }
 

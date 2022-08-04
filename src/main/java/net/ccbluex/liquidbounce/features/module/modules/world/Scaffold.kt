@@ -77,6 +77,7 @@ class Scaffold : Module() {
 
     // Autoblock
     private val autoBlockValue = ListValue("AutoBlock", arrayOf("Off", "Pick", "Spoof", "Switch"), "Spoof")
+    private val randomSlotValue = BoolValue("RandomSlot",true)
 
     // Basic stuff
     @JvmField
@@ -378,7 +379,7 @@ class Scaffold : Module() {
         val holdingItem = player.heldItem != null && player.heldItem!!.item is ItemBlock
         if (if (!autoBlockValue.get()
                     .equals("off", true)
-            ) InventoryUtils.findAutoBlockBlock() == -1 && !holdingItem else !holdingItem
+            ) InventoryUtils.findAutoBlockBlock(randomSlotValue.get()) == -1 && !holdingItem else !holdingItem
         ) {
             return
         }
@@ -455,7 +456,7 @@ class Scaffold : Module() {
 
         var itemStack = player.heldItem
         if (itemStack == null || itemStack.item !is ItemBlock|| (itemStack.item!! as ItemBlock).block is BlockBush || player.heldItem!!.stackSize <= 0) {
-            val blockSlot = InventoryUtils.findAutoBlockBlock()
+            val blockSlot = InventoryUtils.findAutoBlockBlock(randomSlotValue.get())
 
             if (blockSlot == -1) {
                 return
