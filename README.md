@@ -30,7 +30,7 @@ Mixins can be used to modify classes at runtime before they are loaded. LiquidBo
 ## Contributing
 
 We appreciate contributions. So if you want to support us, feel free to make changes to LiquidBounce's source code and submit a pull request. Currently, our main goals are the following:
-1. Improve LiquidBounce's performance.
+1. Improve LiquidShadow's performance.
 2. Re-work most of the render code.
 
 If you have experience in one or more of these fields, we would highly appreciate your support.
