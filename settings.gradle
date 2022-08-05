@@ -13,7 +13,7 @@ pluginManagement {
                     useModule("com.github.woodp1anks:ForgeGradle:${forgegradle_version}")
                     break
                 case "org.spongepowered.mixin":
-                    useModule("com.github.xcfrg:mixingradle:${mixingradle_version}")
+                    useModule("com.github.woodp1anks:mixingradle:${mixingradle_version}")
                     break
             }
         }

@@ -5,10 +5,7 @@ import net.ccbluex.liquidbounce.features.command.Command;
 import net.ccbluex.liquidbounce.features.special.Setting;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class SettingsCommand extends Command {
     public SettingsCommand() {
@@ -69,21 +66,29 @@ public class SettingsCommand extends Command {
     @NotNull
     @Override
     public List<String> tabComplete(@NotNull String[] args) {
+        System.out.println(args[0]);
         if (args.length == 1) {
-            return Arrays.asList("load","save","list");
+            List<String> cmds = Arrays.asList("load","save","list");
+            List<String> s = new ArrayList<>();
+            for (String cmd : cmds) {
+                if (cmd.startsWith(args[0].toLowerCase())) {
+                    s.add(cmd);
+                }
+            }
+            return s;
         } else if (args.length == 2) {
-            if (args[1].equalsIgnoreCase("load")) {
+            if (args[0].equalsIgnoreCase("load") || args[0].equalsIgnoreCase("save")) {
                 List<String> settings = new ArrayList<>();
                 for (Setting setting : LiquidBounce.settingManager.getSettings()) {
                     settings.add(setting.getName());
                 }
-                return settings;
-            } else if (args[1].equalsIgnoreCase("save")) {
-                List<String> settings = new ArrayList<>();
-                for (Setting setting : LiquidBounce.settingManager.getSettings()) {
-                    settings.add(setting.getName());
+                List<String> s = new ArrayList<>();
+                for (String setting : settings) {
+                    if (setting.startsWith(args[1].toLowerCase())) {
+                        s.add(setting);
+                    }
                 }
-                return settings;
+                return s;
             }
         }
         return Collections.emptyList();
