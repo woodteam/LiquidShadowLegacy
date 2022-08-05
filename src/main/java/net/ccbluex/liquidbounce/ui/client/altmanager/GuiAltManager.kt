@@ -15,13 +15,18 @@ import me.liuli.elixir.account.MojangAccount
 import net.ccbluex.liquidbounce.LiquidBounce
 import net.ccbluex.liquidbounce.LiquidBounce.fileManager
 import net.ccbluex.liquidbounce.event.SessionEvent
-import net.ccbluex.liquidbounce.ui.client.altmanager.menus.*
+import net.ccbluex.liquidbounce.ui.client.altmanager.menus.GuiChangeName
+import net.ccbluex.liquidbounce.ui.client.altmanager.menus.GuiLoginIntoAccount
+import net.ccbluex.liquidbounce.ui.client.altmanager.menus.GuiSessionLogin
 import net.ccbluex.liquidbounce.ui.client.altmanager.menus.altgenerator.GuiTheAltening
 import net.ccbluex.liquidbounce.ui.font.Fonts
 import net.ccbluex.liquidbounce.utils.ClientUtils
+import net.ccbluex.liquidbounce.utils.ServerUtils
 import net.ccbluex.liquidbounce.utils.login.UserUtils.isValidTokenOffline
 import net.ccbluex.liquidbounce.utils.misc.HttpUtils.get
 import net.ccbluex.liquidbounce.utils.misc.MiscUtils
+import net.ccbluex.liquidbounce.utils.misc.RandomUtils.nextInt
+import net.ccbluex.liquidbounce.utils.misc.RandomUtils.randomString
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
@@ -34,7 +39,6 @@ import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import java.util.*
 import java.util.function.Consumer
-import javax.swing.JOptionPane
 import kotlin.concurrent.thread
 
 
@@ -73,12 +77,12 @@ class GuiAltManager(private val prevGui: GuiScreen) : GuiScreen() {
         buttonList.add(GuiButton(6, 5, startPositionY + 24 * 3, 90, 20, "Direct Login"))
         buttonList.add(GuiButton(10, 5, startPositionY + 24 * 4, 90, 20, "Session Login"))
         buttonList.add(GuiButton(88, 5, startPositionY + 24 * 5, 90, 20, "Change Name"))
+        buttonList.add(GuiButton(11,5,startPositionY + 24 * 6,90,20,"Random Name"))
 
         if (activeGenerators.getOrDefault("thealtening", true)) {
-            buttonList.add(GuiButton(9, 5, startPositionY + 24 * 6 + 5, 90, 20, "TheAltening"))
+            buttonList.add(GuiButton(9, 5, startPositionY + 24 * 7 + 5, 90, 20, "TheAltening"))
         }
 
-        buttonList.add(GuiButton(11, 5, startPositionY + 24 * 7 + 10, 90, 20, "Cape"))
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
@@ -241,7 +245,17 @@ class GuiAltManager(private val prevGui: GuiScreen) : GuiScreen() {
                 mc.displayGuiScreen(GuiSessionLogin(this))
             }
             11 -> { // Donator Cape Button
-                mc.displayGuiScreen(GuiDonatorCape(this))
+                val crackedAccount = CrackedAccount()
+                crackedAccount.name = randomString(nextInt(5, 16))
+                crackedAccount.update()
+
+                mc.session = Session(
+                    crackedAccount.session.username, crackedAccount.session.uuid,
+                    crackedAccount.session.token, crackedAccount.session.type
+                )
+
+                status = "§aRandom name account has generated success!"
+                LiquidBounce.eventManager.callEvent(SessionEvent())
             }
         }
     }
