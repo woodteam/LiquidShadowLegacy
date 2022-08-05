@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.network.play.server.S0BPacketAnimation
 import net.minecraft.network.play.server.S0CPacketSpawnPlayer
+import net.minecraft.network.play.server.S13PacketDestroyEntities
 import net.minecraft.network.play.server.S14PacketEntity
 
 @ModuleInfo(name = "AntiBot", description = "Prevents KillAura from attacking AntiCheat bots.", category = ModuleCategory.MISC)
@@ -61,6 +62,8 @@ object AntiBot : Module() {
     private val hitted = mutableListOf<Int>()
     private val notAlwaysInRadius = mutableListOf<Int>()
     private val spawnWhenCombat = mutableListOf<Int>()
+
+    private var removedEntities = mutableListOf<Int>()
 
     private var inCombat = false
     private var lastAttackTime = MSTimer()
@@ -204,9 +207,13 @@ object AntiBot : Module() {
         }
 
         if (packet is S0CPacketSpawnPlayer) {
-            if (inCombat) {
+            if (inCombat && !removedEntities.contains(packet.entityID)) {
                 spawnWhenCombat.add(packet.entityID)
             }
+        }
+
+        if (packet is S13PacketDestroyEntities) {
+            removedEntities.addAll(packet.entityIDs.toTypedArray())
         }
     }
 
