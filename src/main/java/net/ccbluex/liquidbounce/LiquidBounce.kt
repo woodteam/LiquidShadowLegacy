@@ -13,6 +13,7 @@ import net.ccbluex.liquidbounce.features.module.ModuleManager
 import net.ccbluex.liquidbounce.features.special.AntiForge
 import net.ccbluex.liquidbounce.features.special.BungeeCordSpoof
 import net.ccbluex.liquidbounce.features.special.ClientRichPresence
+import net.ccbluex.liquidbounce.features.special.SettingManager
 import net.ccbluex.liquidbounce.file.FileManager
 
 import net.ccbluex.liquidbounce.script.ScriptManager
@@ -56,6 +57,7 @@ object LiquidBounce {
     lateinit var eventManager: EventManager
     lateinit var fileManager: FileManager
     lateinit var scriptManager: ScriptManager
+    lateinit var settingManager: SettingManager
 
     // HUD & ClickGUI
     lateinit var hud: HUD
@@ -116,6 +118,10 @@ object LiquidBounce {
 
         // Register commands
         commandManager.registerCommands()
+
+        settingManager = SettingManager()
+
+        settingManager.load()
 
         // Load configs
         fileManager.loadConfigs(fileManager.modulesConfig, fileManager.valuesConfig, fileManager.accountsConfig,
