@@ -123,7 +123,7 @@ class Notification(private val message: String,private val notificationType: Not
             }
 
             FadeState.STAY -> if (stay > 0)
-                stay = 0F
+                stay--;
             else
                 fadeState = FadeState.OUT
 

@@ -21,7 +21,7 @@ public class AntiVoid extends Module {
     private final FloatValue maxFallDistanceValue = new FloatValue("MaxFallDistance",10,5,20);
     private final IntegerValue coolDownTicksValue = new IntegerValue("CoolDownTicks",20,5,60);
     private final BoolValue autoScaffoldValue = new BoolValue("AutoScaffold",true);
-    private final BoolValue autoTowerValue = new BoolValue("AutoTower",true);
+    private final BoolValue autoTowerValue = new BoolValue("AutoTower",false);
     private final FloatValue motionFlag_MotionYValue = new FloatValue("MotionFlag-MotionY",2,1,5);
 
     private int ticks;

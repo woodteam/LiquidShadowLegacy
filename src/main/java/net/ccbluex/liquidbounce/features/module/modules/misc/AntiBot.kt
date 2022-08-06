@@ -239,7 +239,7 @@ object AntiBot : Module() {
                 if (entity is EntityLivingBase && isBot(entity) && entity != mc.thePlayer) {
                     mc.theWorld.removeEntityFromWorld(entity.entityId)
                     if (removeNotificationValue.get()) {
-                        LiquidBounce.hud.addNotification(Notification(entity.name + " is a bot!",NormalType()))
+                        LiquidBounce.hud.addNotification(Notification(entity.name + " is been removed cause its a bot!",NormalType()))
                     }
                 }
             }
