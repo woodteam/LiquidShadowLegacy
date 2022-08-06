@@ -39,11 +39,16 @@ class Notifications(x: Double = 0.0, y: Double = 30.0, scale: Float = 1F,
         if (LiquidBounce.hud.notifications.size > 0) {
             var i = 0
             var y = 0F
-            for (notification in LiquidBounce.hud.notifications) {
-                LiquidBounce.hud.notifications[i].drawNotification(backgroundAlphaValue.get(),y)
-                i++
-                y += 30F
+            try {
+                for (notification in LiquidBounce.hud.notifications) {
+                    LiquidBounce.hud.notifications[i].drawNotification(backgroundAlphaValue.get(),y)
+                    i++
+                    y += 30F
+                }
+            } catch (_:ConcurrentModificationException) {
+                
             }
+
 
         }
 
