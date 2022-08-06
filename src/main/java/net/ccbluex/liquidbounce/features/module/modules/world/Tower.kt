@@ -49,7 +49,7 @@ import kotlin.math.truncate
     name = "Tower",
     description = "Automatically builds a tower beneath you.",
     category = ModuleCategory.WORLD,
-    keyBind = Keyboard.KEY_G
+    keyBind = Keyboard.KEY_O
 )
 class Tower : Module() {
     /**
@@ -66,7 +66,7 @@ class Tower : Module() {
     private val stopWhenBlockAbove = BoolValue("StopWhenBlockAbove", false)
     private val rotationsValue = BoolValue("Rotations", true)
     private val keepRotationValue = BoolValue("KeepRotation", false)
-    private val onJumpValue = BoolValue("OnJump", true)
+    private val onJumpValue = BoolValue("OnJump", false)
     private val matrixValue = BoolValue("Matrix", false)
     private val placeModeValue = ListValue("PlaceTiming", arrayOf("Pre", "Post"), "Post")
     private val timerValue = FloatValue("Timer", 1f, 0.01f, 10f)
