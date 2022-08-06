@@ -76,7 +76,7 @@ public class AutoPlay extends Module {
 
     @EventTarget
     public void onUpdate(UpdateEvent updateEvent) {
-        if (serverValue.get().equalsIgnoreCase("Mineland")) {
+        if (serverValue.get().equalsIgnoreCase("Mineland") || serverValue.get().equalsIgnoreCase("LuoHuaXingYu")) {
             for (int i = 36;;) {
                 if (i > 44) {
                     break;
