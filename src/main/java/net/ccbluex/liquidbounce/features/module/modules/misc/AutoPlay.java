@@ -22,7 +22,7 @@ import net.minecraft.network.play.server.S45PacketTitle;
 @ModuleInfo(name = "AutoPlay",description = "Automatically play again this game when you end this game.",category = ModuleCategory.MISC)
 public class AutoPlay extends Module {
     private final ListValue serverValue = new ListValue("Server",new String[]{"Mineland","LuoHuaXingYu"},"Mineland");
-    private final IntegerValue delayTicksValue = new IntegerValue("DelayTicks",80,1,200);
+    private final IntegerValue delayValue = new IntegerValue("Delay",5,1,10);
 
     private int ticks;
     private boolean needRestart;
@@ -96,7 +96,7 @@ public class AutoPlay extends Module {
         }
 
 
-        if (ticks >= delayTicksValue.get()) {
+        if (ticks >= delayValue.get() * 20) {
             LiquidBounce.hud.addNotification(new Notification("Sending you to next game...",new NormalType()));
             if (serverValue.get().equalsIgnoreCase("Mineland")) {
                 ItemStack paperItem = mc.thePlayer.inventoryContainer.getSlot(paperSlot).getStack();
@@ -112,7 +112,7 @@ public class AutoPlay extends Module {
             ticks = 0;
         }
         if (needRestart && ticks == 0) {
-            LiquidBounce.hud.addNotification(new Notification("Sending you to next game in " + delayTicksValue.get() + " ticks.",new NormalType()));
+            LiquidBounce.hud.addNotification(new Notification("Sending you to next game in " + delayValue.get() + " seconds.",new NormalType()));
         }
         if (needRestart) {
             ticks++;
