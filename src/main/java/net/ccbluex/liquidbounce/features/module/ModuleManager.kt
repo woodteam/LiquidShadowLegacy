@@ -182,7 +182,8 @@ class ModuleManager : Listenable {
             FPSHurtCam::class.java,
             AntiStuck::class.java,
             NoCloseGui::class.java,
-            AutoPlay::class.java
+            AutoPlay::class.java,
+            AntiStaff::class.java
         )
 
         registerModule(NoScoreboard)
