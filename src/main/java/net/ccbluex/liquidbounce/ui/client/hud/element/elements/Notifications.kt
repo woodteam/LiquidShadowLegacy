@@ -91,16 +91,21 @@ class Notification(private val message: String,private val notificationType: Not
     fun drawNotification(backgroundAlpha:Int,y: Float) {
         // Draw notification
         RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(0,0,0,backgroundAlpha).rgb)
-        if (notificationType is NormalType)
-            RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(65, 215, 255).rgb)
-        else if (notificationType is ToggleType)
+        if (notificationType is NormalType) {
+            RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(65, 215, 255,backgroundAlpha).rgb)
+            RenderUtils.drawRect(-x + stay, -y, -x, -y + -20F, Color(150, 255, 255,backgroundAlpha).rgb)
+        }
+        else if (notificationType is ToggleType) {
             if (notificationType.getModuleState()) {
-                RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(80, 255, 80).rgb)
+                RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(80, 255, 80,backgroundAlpha).rgb)
+                RenderUtils.drawRect(-x + stay, -y, -x, -y + -20F, Color(150, 255, 150,backgroundAlpha).rgb)
             } else if (!notificationType.getModuleState()) {
-                RenderUtils.drawRect(-x, -y, -x - 5, -y + -20F, Color(255,80,80).rgb)
+                RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(255,80,80,backgroundAlpha).rgb)
+                RenderUtils.drawRect(-x + stay, -y, -x, -y + -20F, Color(255,150,150,backgroundAlpha).rgb)
             }
+        }
 
-        Fonts.font35.drawString(message, -x + 4, -y + -14F, Int.MAX_VALUE)
+        Fonts.font35.drawString(message, -x + 4, -y + -14F, Color(50,50,50).rgb)
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
 
         // Animation
@@ -119,7 +124,7 @@ class Notification(private val message: String,private val notificationType: Not
                     fadeStep = width
                 }
 
-                stay = 60F
+                stay = textLength.toFloat()
             }
 
             FadeState.STAY -> if (stay > 0)
