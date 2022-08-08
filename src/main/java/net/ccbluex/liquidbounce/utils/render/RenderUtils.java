@@ -422,15 +422,15 @@ public final class RenderUtils extends MinecraftInstance {
     public static void drawLoadingCircle(float x, float y) {
         for (int i = 0; i < 4; i++) {
             int rot = (int) ((System.nanoTime() / 5000000 * i) % 360);
-            drawCircle(x, y, i * 10, rot - 180, rot);
+            drawCircle(x, y, i * 10, rot - 180, rot, 255, 255, 255, 255);
         }
     }
 
-    public static void drawCircle(float x, float y, float radius, int start, int end) {
+    public static void drawCircle(float x, float y, float radius, int start, int end, int r, int g, int b, int alpha) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-        glColor(Color.WHITE);
+        glColor4f(r / 255F,g / 255F,b / 255F,alpha / 255F);
 
         glEnable(GL_LINE_SMOOTH);
         glLineWidth(2F);
