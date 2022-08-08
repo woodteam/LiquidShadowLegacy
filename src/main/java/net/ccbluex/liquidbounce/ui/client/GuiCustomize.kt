@@ -15,13 +15,14 @@ import net.minecraftforge.fml.client.GuiModList
 import org.lwjgl.input.Keyboard
 import kotlin.concurrent.thread
 
-class GuiModsMenu(private val prevGui: GuiScreen) : GuiScreen() {
+class GuiCustomize(private val prevGui: GuiScreen) : GuiScreen() {
 
     override fun initGui() {
         buttonList.add(GuiButton(0, width / 2 - 100, height / 4 + 48, "Forge Mods"))
         buttonList.add(GuiButton(1, width / 2 - 100, height / 4 + 48 + 25, "Scripts"))
         buttonList.add(GuiButton(2, width / 2 - 100, height / 4 + 48 + 50, "Rich Presence: ${if (LiquidBounce.clientRichPresence.showRichPresenceValue) "§aON" else "§cOFF"}"))
-        buttonList.add(GuiButton(3, width / 2 - 100, height / 4 + 48 + 75, "Back"))
+        buttonList.add(GuiButton(4,width / 2 - 100,height / 4 + 48 + 75,"BackGround"))
+        buttonList.add(GuiButton(3, width / 2 - 100, height - 40, "Back"))
     }
 
     override fun actionPerformed(button: GuiButton) {
@@ -53,6 +54,7 @@ class GuiModsMenu(private val prevGui: GuiScreen) : GuiScreen() {
                 }
             }
             3 -> mc.displayGuiScreen(prevGui)
+            4 -> mc.displayGuiScreen(GuiBackground(this))
         }
     }
 
@@ -68,7 +70,7 @@ class GuiModsMenu(private val prevGui: GuiScreen) : GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         drawBackground(0)
 
-        Fonts.fontBold180.drawCenteredString("Mods", width / 2F, height / 8F + 5F, 4673984, true)
+        Fonts.fontBold180.drawCenteredString("Customize", width / 2F, height / 8F + 5F, 4673984, true)
 
         super.drawScreen(mouseX, mouseY, partialTicks)
     }
