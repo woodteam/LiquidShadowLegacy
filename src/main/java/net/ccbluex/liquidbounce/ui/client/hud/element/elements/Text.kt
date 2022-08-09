@@ -50,7 +50,7 @@ class Text(x: Double = 10.0, y: Double = 10.0, scale: Float = 1F,
             text.displayString.set("%clientName%")
             text.shadow.set(true)
             text.fontValue.set(Fonts.font40)
-            text.setColor(Color(0, 111, 255))
+            text.setColor(Color(65, 215, 255))
 
             return text
         }

@@ -131,8 +131,8 @@ class GuiMainMenu : GuiScreen() {
             updateHeight += Fonts.font35.FONT_HEIGHT + 2
         }
 
-        Fonts.font35.drawString(LiquidBounce.CLIENT_NAME + " " + LiquidBounce.CLIENT_VERSION,width - 8 - Fonts.font35.getStringWidth(LiquidBounce.CLIENT_NAME + " " + LiquidBounce.CLIENT_VERSION),8,Color(35,165,255).rgb)
-        Fonts.font35.drawString("by " + LiquidBounce.CLIENT_CREATOR,width - 8 - Fonts.font35.getStringWidth("by " + LiquidBounce.CLIENT_CREATOR),8 + Fonts.font35.FONT_HEIGHT + 2,Color(35,165,255).rgb)
+        Fonts.font35.drawString(LiquidBounce.CLIENT_NAME + " " + LiquidBounce.CLIENT_VERSION,width - 8 - Fonts.font35.getStringWidth(LiquidBounce.CLIENT_NAME + " " + LiquidBounce.CLIENT_VERSION),8,Color(65,215,255).rgb)
+        Fonts.font35.drawString("by " + LiquidBounce.CLIENT_CREATOR,width - 8 - Fonts.font35.getStringWidth("by " + LiquidBounce.CLIENT_CREATOR),8 + Fonts.font35.FONT_HEIGHT + 2,Color(65,215,255).rgb)
 
         super.drawScreen(mouseX, mouseY, partialTicks)
     }

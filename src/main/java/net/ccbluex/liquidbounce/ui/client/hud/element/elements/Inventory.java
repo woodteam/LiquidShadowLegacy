@@ -1,6 +1,5 @@
 package net.ccbluex.liquidbounce.ui.client.hud.element.elements;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.ccbluex.liquidbounce.ui.client.hud.element.Border;
 import net.ccbluex.liquidbounce.ui.client.hud.element.Element;
 import net.ccbluex.liquidbounce.ui.client.hud.element.ElementInfo;

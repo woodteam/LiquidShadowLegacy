@@ -44,7 +44,7 @@ object LiquidBounce {
     @JvmField
     val CLIENT_COMMIT: String = gitInfo["git.commit.id.abbrev"]?.let { "git-$it" } ?: "unknown"
     const val IN_DEV = true
-    const val CLIENT_CREATOR = "woodTeam"
+    const val CLIENT_CREATOR = "WoodTeam"
     const val MINECRAFT_VERSION = "1.8.9"
     const val CLIENT_CLOUD = "https://cloud.liquidbounce.net/LiquidBounce"
     const val CLIENT_API = "https://api.liquidbounce.net/api/v1"

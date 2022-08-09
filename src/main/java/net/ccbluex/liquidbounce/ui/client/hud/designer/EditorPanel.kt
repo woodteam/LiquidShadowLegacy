@@ -96,7 +96,7 @@ class EditorPanel(private val hudDesigner: GuiHudDesigner, var x: Int, var y: In
 
             val v = 197 * (-scroll / (realHeight - 170F))
             RenderUtils.drawRect(x + width - 5F, y + 15 + v, x + width - 2F, y + 20 + v,
-                    Color(37, 126, 255).rgb)
+                    Color(65,215,255).rgb)
 
             GL11.glDisable(GL11.GL_SCISSOR_TEST)
             GL11.glPopMatrix()
@@ -313,7 +313,7 @@ class EditorPanel(private val hudDesigner: GuiHudDesigner, var x: Int, var y: In
                     // Slider mark
                     val sliderValue = x + ((prevWidth - 18F) * (current - min) / (max - min))
                     RenderUtils.drawRect(8F + sliderValue, y + height + 9F, sliderValue + 11F, y + height
-                            + 15F, Color(37, 126, 255).rgb)
+                            + 15F, Color(65,215,255).rgb)
 
                     // Slider changer
                     if (mouseX >= x + 8 && mouseX <= x + prevWidth && mouseY >= y + height + 9 && mouseY <= y + height + 15 &&
@@ -348,7 +348,7 @@ class EditorPanel(private val hudDesigner: GuiHudDesigner, var x: Int, var y: In
                     // Slider mark
                     val sliderValue = x + ((prevWidth - 18F) * (current - min) / (max - min))
                     RenderUtils.drawRect(8F + sliderValue, y + height + 9F, sliderValue + 11F, y + height
-                            + 15F, Color(37, 126, 255).rgb)
+                            + 15F, Color(65,215,255).rgb)
 
                     // Slider changer
                     if (mouseX >= x + 8 && mouseX <= x + prevWidth && mouseY >= y + height + 9 && mouseY <= y + height + 15 &&

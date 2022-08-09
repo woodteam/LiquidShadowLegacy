@@ -9,6 +9,7 @@ import net.ccbluex.liquidbounce.ui.font.Fonts
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import org.lwjgl.input.Keyboard
+import java.awt.Color
 
 class GuiTools(private val prevGui: GuiScreen) : GuiScreen() {
 
@@ -26,7 +27,7 @@ class GuiTools(private val prevGui: GuiScreen) : GuiScreen() {
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         drawBackground(0)
-        Fonts.fontBold180.drawCenteredString("Tools", width / 2F, height / 8F + 5F, 4673984, true)
+        Fonts.fontBold180.drawCenteredString("Tools", width / 2F, height / 8F + 5F, Color(65,215,255).rgb, true)
 
         super.drawScreen(mouseX, mouseY, partialTicks)
     }
