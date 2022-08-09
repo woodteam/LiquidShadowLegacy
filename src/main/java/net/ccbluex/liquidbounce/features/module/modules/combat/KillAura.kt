@@ -92,7 +92,7 @@ class KillAura : Module() {
     private val keepSprintValue = BoolValue("KeepSprint", true)
 
     // AutoBlock
-    private val autoBlockValue = ListValue("AutoBlock", arrayOf("Off", "Packet", "AfterTick"), "Packet")
+    private val autoBlockValue = ListValue("AutoBlock", arrayOf("Off", "Packet", "AfterTick","Vanilla"), "Vanilla")
     private val interactAutoBlockValue = BoolValue("InteractAutoBlock", true)
     private val blockRate = IntegerValue("BlockRate", 100, 1, 100)
 
@@ -215,6 +215,9 @@ class KillAura : Module() {
             // AutoBlock
             if (autoBlockValue.get().equals("AfterTick", true) && canBlock)
                 startBlocking(currentTarget!!, hitable)
+            if (autoBlockValue.get().equals("Vanilla",true) && canBlock) {
+                startBlocking(currentTarget!!,interactAutoBlockValue.get())
+            }
 
             return
         }
