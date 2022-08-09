@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraftforge.fml.client.GuiModList
 import org.lwjgl.input.Keyboard
+import java.awt.Color
 import kotlin.concurrent.thread
 
 class GuiCustomize(private val prevGui: GuiScreen) : GuiScreen() {
@@ -70,7 +71,7 @@ class GuiCustomize(private val prevGui: GuiScreen) : GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         drawBackground(0)
 
-        Fonts.fontBold180.drawCenteredString("Customize", width / 2F, height / 8F + 5F, 4673984, true)
+        Fonts.fontBold180.drawCenteredString("Customize", width / 2F, height / 8F + 5F, Color(65,215,255).rgb, true)
 
         super.drawScreen(mouseX, mouseY, partialTicks)
     }

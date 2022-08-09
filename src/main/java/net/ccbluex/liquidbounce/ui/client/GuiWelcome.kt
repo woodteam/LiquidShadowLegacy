@@ -47,7 +47,7 @@ class GuiWelcome : GuiScreen() {
 
         // Title
         GL11.glScalef(2F, 2F, 2F)
-        Fonts.font40.drawCenteredString("Welcome!", width / 2 / 2F, height / 8F / 2 + 20, Color(0, 140, 255).rgb, true)
+        Fonts.font40.drawCenteredString("Welcome!", width / 2 / 2F, height / 8F / 2 + 20, Color(65,215,255).rgb, true)
     }
 
     override fun keyTyped(typedChar: Char, keyCode: Int) {

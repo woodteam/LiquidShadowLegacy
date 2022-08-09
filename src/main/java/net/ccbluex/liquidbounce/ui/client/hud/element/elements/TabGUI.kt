@@ -31,8 +31,8 @@ class TabGUI(x: Double = 5.0, y: Double = 25.0) : Element(x = x, y = y) {
 
     private val rainbowX = FloatValue("Rainbow-X", -1000F, -2000F, 2000F)
     private val rainbowY = FloatValue("Rainbow-Y", -1000F, -2000F, 2000F)
-    private val redValue = IntegerValue("Rectangle Red", 0, 0, 255)
-    private val greenValue = IntegerValue("Rectangle Green", 148, 0, 255)
+    private val redValue = IntegerValue("Rectangle Red", 65, 0, 255)
+    private val greenValue = IntegerValue("Rectangle Green", 215, 0, 255)
     private val blueValue = IntegerValue("Rectangle Blue", 255, 0, 255)
     private val alphaValue = IntegerValue("Rectangle Alpha", 140, 0, 255)
     private val rectangleRainbow = BoolValue("Rectangle Rainbow", false)

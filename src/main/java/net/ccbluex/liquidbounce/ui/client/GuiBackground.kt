@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.input.Keyboard
+import java.awt.Color
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Files
@@ -80,7 +81,7 @@ class GuiBackground(val prevGui: GuiScreen) : GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         drawBackground(0)
         Fonts.fontBold180.drawCenteredString("Background", this.width / 2F, height / 8F + 5F,
-                4673984, true)
+                Color(65,215,255).rgb, true)
 
         super.drawScreen(mouseX, mouseY, partialTicks)
     }

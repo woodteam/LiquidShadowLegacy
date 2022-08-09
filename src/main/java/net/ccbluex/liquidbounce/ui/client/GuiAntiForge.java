@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class GuiAntiForge extends GuiScreen {
@@ -70,7 +71,7 @@ public class GuiAntiForge extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawBackground(0);
-        Fonts.fontBold180.drawCenteredString("AntiForge", (int) (width / 2F), (int) (height / 8F + 5F), 4673984, true);
+        Fonts.fontBold180.drawCenteredString("AntiForge", (int) (width / 2F), (int) (height / 8F + 5F), new Color(65,215,255).getRGB(), true);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
