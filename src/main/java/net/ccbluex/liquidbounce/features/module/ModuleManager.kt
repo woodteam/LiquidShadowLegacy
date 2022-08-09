@@ -134,7 +134,6 @@ class ModuleManager : Listenable {
                 TNTBlock::class.java,
                 InventoryCleaner::class.java,
                 TrueSight::class.java,
-                LiquidChat::class.java,
                 AntiBlind::class.java,
                 NoSwing::class.java,
                 BedGodMode::class.java,
