@@ -6,6 +6,8 @@
 package net.ccbluex.liquidbounce.injection.forge.mixins.gui;
 
 import com.mojang.authlib.GameProfile;
+import net.ccbluex.liquidbounce.LiquidBounce;
+import net.ccbluex.liquidbounce.event.ConnectServerEvent;
 import net.ccbluex.liquidbounce.ui.font.Fonts;
 import net.ccbluex.liquidbounce.utils.ServerUtils;
 import net.ccbluex.liquidbounce.utils.render.RenderUtils;
@@ -43,6 +45,7 @@ public abstract class MixinGuiConnecting extends GuiScreen {
     @Inject(method = "connect", at = @At("HEAD"))
     private void headConnect(final String ip, final int port, CallbackInfo callbackInfo) {
         ServerUtils.serverData = new ServerData("", ip + ":" + port, false);
+        LiquidBounce.eventManager.callEvent(new ConnectServerEvent(new ServerData("", ip + ":" + port, false)));
     }
 
     /**

@@ -7,12 +7,13 @@ package net.ccbluex.liquidbounce.injection.forge.mixins.network;
 
 import io.netty.buffer.Unpooled;
 import net.ccbluex.liquidbounce.LiquidBounce;
+import net.ccbluex.liquidbounce.event.DisconnectEvent;
 import net.ccbluex.liquidbounce.event.EntityMovementEvent;
 import net.ccbluex.liquidbounce.features.special.AntiForge;
 import net.ccbluex.liquidbounce.utils.ClientUtils;
 import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -25,6 +26,7 @@ import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S01PacketJoinGame;
 import net.minecraft.network.play.server.S14PacketEntity;
 import net.minecraft.network.play.server.S48PacketResourcePackSend;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.WorldSettings;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -100,5 +102,10 @@ public abstract class MixinNetHandlerPlayClient {
 
         if(entity != null)
             LiquidBounce.eventManager.callEvent(new EntityMovementEvent(entity));
+    }
+
+    @Inject(method = "onDisconnect",at = @At("HEAD"))
+    public void onDisconnect(IChatComponent p_onDisconnect_1_,CallbackInfo callbackInfo) {
+        LiquidBounce.eventManager.callEvent(new DisconnectEvent());
     }
 }

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-@ElementInfo(name = "Inventory",single = true)
+@ElementInfo(name = "Inventory")
 public class Inventory extends Element {
     private final BoolValue titleValue = new BoolValue("Title",true);
     private final ListValue titlePositionValue = new ListValue("TitlePosition",new String[]{"Left","Middle","Right"},"Middle");

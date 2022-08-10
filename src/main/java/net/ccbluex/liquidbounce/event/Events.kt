@@ -7,8 +7,10 @@ package net.ccbluex.liquidbounce.event
 
 import net.minecraft.block.Block
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.multiplayer.ServerData
 import net.minecraft.client.multiplayer.WorldClient
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.network.Packet
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.BlockPos
@@ -175,3 +177,11 @@ class WorldEvent(val worldClient: WorldClient?) : Event()
  * Called when window clicked
  */
 class ClickWindowEvent(val windowId: Int, val slotId: Int, val mouseButtonClicked: Int, val mode: Int) : CancellableEvent()
+
+class PlayerKillEntityEvent(val entity: EntityLivingBase) : Event()
+
+class DisconnectEvent : Event()
+
+class QuitServerEvent : Event()
+
+class ConnectServerEvent(val serverData: ServerData) : Event()

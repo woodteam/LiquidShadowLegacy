@@ -6,11 +6,15 @@
 package net.ccbluex.liquidbounce.injection.forge.mixins.world;
 
 import net.ccbluex.liquidbounce.LiquidBounce;
+import net.ccbluex.liquidbounce.event.QuitServerEvent;
 import net.ccbluex.liquidbounce.features.module.modules.render.TrueSight;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.util.ChatComponentText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldClient.class)
 public class MixinWorldClient {
@@ -20,5 +24,10 @@ public class MixinWorldClient {
         final TrueSight trueSight = (TrueSight) LiquidBounce.moduleManager.getModule(TrueSight.class);
 
         return flag || trueSight.getState() && trueSight.getBarriersValue().get();
+    }
+
+    @Inject(method = "sendQuittingDisconnectingPacket",at = @At("HEAD"))
+    public void sendQuittingDisconnectingPacket(CallbackInfo callbackInfo) {
+        LiquidBounce.eventManager.callEvent(new QuitServerEvent());
     }
 }
