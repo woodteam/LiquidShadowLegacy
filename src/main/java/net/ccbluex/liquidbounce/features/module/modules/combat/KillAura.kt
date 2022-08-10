@@ -215,7 +215,7 @@ class KillAura : Module() {
             // AutoBlock
             if (autoBlockValue.get().equals("AfterTick", true) && canBlock)
                 startBlocking(currentTarget!!, hitable)
-            if (autoBlockValue.get().equals("Vanilla",true) && canBlock) {
+            if (autoBlockValue.get().equals("Vanilla",true) && canBlock && !blockingStatus) {
                 startBlocking(currentTarget!!,interactAutoBlockValue.get())
             }
 
@@ -521,9 +521,9 @@ class KillAura : Module() {
         // Stop blocking
         val thePlayer = mc.thePlayer!!
 
-        if (thePlayer.isBlocking || blockingStatus)
+        if ((thePlayer.isBlocking || blockingStatus) && !autoBlockValue.get().equals("Vanilla",true)) {
             stopBlocking()
-
+        }
         // Call attack event
         LiquidBounce.eventManager.callEvent(AttackEvent(entity))
 
