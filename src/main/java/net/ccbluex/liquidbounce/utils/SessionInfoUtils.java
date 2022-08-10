@@ -128,6 +128,10 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
     }
 
     public static boolean isInSupportedServer() {
+        if (ServerUtils.serverData == null) {
+            return false;
+        }
+
         return ServerUtils.serverData.serverIP.toLowerCase().contains("Mineland".toLowerCase())
                 || ServerUtils.serverData.serverIP.toLowerCase().contains("join-ml".toLowerCase());
     }
