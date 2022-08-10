@@ -49,10 +49,6 @@ class CommandManager {
         registerCommand(ShortcutCommand())
         registerCommand(HideCommand())
         registerCommand(XrayCommand())
-        registerCommand(LiquidChatCommand())
-        registerCommand(PrivateChatCommand())
-        registerCommand(ChatTokenCommand())
-        registerCommand(ChatAdminCommand())
         registerCommand(SettingsCommand())
     }
 
