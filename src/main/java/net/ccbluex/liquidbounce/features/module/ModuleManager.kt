@@ -182,7 +182,8 @@ class ModuleManager : Listenable {
             AntiStuck::class.java,
             NoCloseGui::class.java,
             AutoPlay::class.java,
-            AntiStaff::class.java
+            AntiStaff::class.java,
+            AntiFireBall::class.java,
         )
 
         registerModule(NoScoreboard)
