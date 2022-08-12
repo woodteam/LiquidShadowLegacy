@@ -18,7 +18,7 @@ public class SettingsCommand extends Command {
     @Override
     public void execute(@NotNull String[] args) {
         if (args.length <= 1) {
-            chatSyntax("settings <load/save/list>");
+            chatSyntax("settings <load/save/list/import>");
             return;
         }
 
