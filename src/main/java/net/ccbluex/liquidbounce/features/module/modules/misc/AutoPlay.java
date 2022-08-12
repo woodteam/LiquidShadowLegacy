@@ -9,6 +9,7 @@ import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.NormalType;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification;
+import net.ccbluex.liquidbounce.value.BoolValue;
 import net.ccbluex.liquidbounce.value.IntegerValue;
 import net.ccbluex.liquidbounce.value.ListValue;
 import net.minecraft.init.Items;
@@ -23,6 +24,7 @@ import net.minecraft.network.play.server.S45PacketTitle;
 public class AutoPlay extends Module {
     private final ListValue serverValue = new ListValue("Server",new String[]{"Mineland","LuoHuaXingYu"},"Mineland");
     private final IntegerValue delayValue = new IntegerValue("Delay",5,1,10);
+    private final BoolValue autoGGValue = new BoolValue("AutoGG",true);
 
     private int ticks;
     private boolean needRestart;
@@ -113,6 +115,9 @@ public class AutoPlay extends Module {
         }
         if (needRestart && ticks == 0) {
             LiquidBounce.hud.addNotification(new Notification("Sending you to next game in " + delayValue.get() + " seconds.",new NormalType()));
+            if (autoGGValue.get()) {
+                mc.thePlayer.sendChatMessage("gg");
+            }
         }
         if (needRestart) {
             ticks++;
