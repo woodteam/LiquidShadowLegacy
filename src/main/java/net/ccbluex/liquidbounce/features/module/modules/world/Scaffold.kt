@@ -25,11 +25,16 @@ import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
 import net.ccbluex.liquidbounce.value.IntegerValue
 import net.ccbluex.liquidbounce.value.ListValue
+import net.minecraft.block.Block
 import net.minecraft.block.BlockBush
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.settings.GameSettings
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraft.network.play.client.C09PacketHeldItemChange
 import net.minecraft.network.play.client.C0APacketAnimation
 import net.minecraft.network.play.client.C0BPacketEntityAction
@@ -192,6 +197,12 @@ class Scaffold : Module() {
 
     // Downwards
     private var shouldGoDown = false
+
+    private var blockSlot = 0
+
+    private var heldingBlock = true
+
+    private var itemStack = ItemStack(Blocks.barrier)
 
     // Enabling module
     override fun onEnable() {
@@ -454,9 +465,9 @@ class Scaffold : Module() {
             return
         }
 
-        var itemStack = player.heldItem
+        itemStack = player.heldItem
         if (itemStack == null || itemStack.item !is ItemBlock|| (itemStack.item!! as ItemBlock).block is BlockBush || player.heldItem!!.stackSize <= 0) {
-            val blockSlot = InventoryUtils.findAutoBlockBlock(randomSlotValue.get())
+            blockSlot = InventoryUtils.findAutoBlockBlock(randomSlotValue.get())
 
             if (blockSlot == -1) {
                 return
@@ -564,27 +575,33 @@ class Scaffold : Module() {
             if (blockOverlay.state && blockOverlay.infoValue.get() && blockOverlay.currentBlock != null) {
                 GL11.glTranslatef(0f, 15f, 0f)
             }
-            val info = "Blocks: §7$blocksAmount"
             val scaledResolution = ScaledResolution(mc)
 
             RenderUtils.drawBorderedRect(
-                scaledResolution.scaledWidth / 2 - 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 5.toFloat(),
-                scaledResolution.scaledWidth / 2 + Fonts.font40.getStringWidth(info) + 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 16.toFloat(),
-                3f,
-                Color.BLACK.rgb,
-                Color.BLACK.rgb
+                scaledResolution.scaledWidth / 2F - 23F,
+                scaledResolution.scaledHeight / 2F + 30F,
+                scaledResolution.scaledWidth / 2F + 23F,
+                scaledResolution.scaledHeight / 2F + 54F,
+                3F,
+                Color(25,25,25,150).rgb,
+                Color(50,50,50,75).rgb
             )
 
             GlStateManager.resetColor()
 
-            Fonts.font40.drawString(
-                info,
-                scaledResolution.scaledWidth / 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 7.toFloat(),
-                Color.WHITE.rgb
-            )
+            Fonts.font35.drawCenteredString(blocksAmount.toString(),scaledResolution.scaledWidth / 2F + 10F,scaledResolution.scaledHeight / 2F + 44F - Fonts.font35.FONT_HEIGHT / 2,Color.WHITE.rgb)
+
+            RenderHelper.enableGUIStandardItemLighting()
+            if (blocksAmount > 0) {
+                mc.renderItem.renderItemAndEffectIntoGUI(itemStack,scaledResolution.scaledWidth / 2 - 18,scaledResolution.scaledHeight / 2 + 35)
+            } else {
+                mc.renderItem.renderItemAndEffectIntoGUI(ItemStack(Blocks.barrier),scaledResolution.scaledWidth / 2 - 18,scaledResolution.scaledHeight / 2 + 35)
+            }
+            RenderHelper.disableStandardItemLighting()
+            GlStateManager.enableAlpha()
+            GlStateManager.disableBlend()
+            GlStateManager.disableLighting()
+
             GL11.glPopMatrix()
         }
     }
