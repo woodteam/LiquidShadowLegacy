@@ -27,11 +27,14 @@ import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
 import net.ccbluex.liquidbounce.value.IntegerValue
 import net.ccbluex.liquidbounce.value.ListValue
+import net.minecraft.block.Block
 import net.minecraft.block.BlockBush
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraft.network.play.client.C03PacketPlayer
 import net.minecraft.network.play.client.C09PacketHeldItemChange
 import net.minecraft.network.play.client.C0APacketAnimation
@@ -103,6 +106,8 @@ class Tower : Module() {
 
     // AutoBlock
     private var slot = 0
+
+    private var itemStack = ItemStack(Blocks.barrier)
 
     override fun onEnable() {
         val thePlayer = mc.thePlayer ?: return
@@ -273,7 +278,7 @@ class Tower : Module() {
         val thePlayer = mc.thePlayer ?: return
 
         // AutoBlock
-        var itemStack = thePlayer.heldItem
+        itemStack = thePlayer.heldItem
         if (itemStack == null || itemStack.item !is ItemBlock || (itemStack.item as ItemBlock).block is BlockBush) {
             val blockSlot = InventoryUtils.findAutoBlockBlock(randomSlotValue.get())
 
@@ -424,33 +429,39 @@ class Tower : Module() {
      */
     @EventTarget
     fun onRender2D(event: Render2DEvent) {
-        if (counterDisplayValue.get()) {
+        if (counterDisplayValue.get() && !LiquidBounce.moduleManager.getModule(Scaffold::class.java).state) {
             GL11.glPushMatrix()
             val blockOverlay = LiquidBounce.moduleManager.getModule(BlockOverlay::class.java) as BlockOverlay
             if (blockOverlay.state && blockOverlay.infoValue.get() && blockOverlay.currentBlock != null) {
                 GL11.glTranslatef(0f, 15f, 0f)
             }
-            val info = "Blocks: §7$blocksAmount"
             val scaledResolution = ScaledResolution(mc)
 
             RenderUtils.drawBorderedRect(
-                scaledResolution.scaledWidth / 2 - 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 5.toFloat(),
-                scaledResolution.scaledWidth / 2 + Fonts.font40.getStringWidth(info) + 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 16.toFloat(),
-                3f,
-                Color.BLACK.rgb,
-                Color.BLACK.rgb
+                scaledResolution.scaledWidth / 2F - 23F,
+                scaledResolution.scaledHeight / 2F + 30F,
+                scaledResolution.scaledWidth / 2F + 23F,
+                scaledResolution.scaledHeight / 2F + 54F,
+                3F,
+                Color(25,25,25,150).rgb,
+                Color(50,50,50,75).rgb
             )
 
             GlStateManager.resetColor()
 
-            Fonts.font40.drawString(
-                info,
-                scaledResolution.scaledWidth / 2.toFloat(),
-                scaledResolution.scaledHeight / 2 + 7.toFloat(),
-                Color.WHITE.rgb
-            )
+            Fonts.font35.drawCenteredString(blocksAmount.toString(),scaledResolution.scaledWidth / 2F + 10F,scaledResolution.scaledHeight / 2F + 44F - Fonts.font35.FONT_HEIGHT / 2,Color.WHITE.rgb)
+
+            RenderHelper.enableGUIStandardItemLighting()
+            if (blocksAmount > 0) {
+                mc.renderItem.renderItemAndEffectIntoGUI(itemStack,scaledResolution.scaledWidth / 2 - 18,scaledResolution.scaledHeight / 2 + 35)
+            } else {
+                mc.renderItem.renderItemAndEffectIntoGUI(ItemStack(Blocks.barrier),scaledResolution.scaledWidth / 2 - 18,scaledResolution.scaledHeight / 2 + 35)
+            }
+            RenderHelper.disableStandardItemLighting()
+            GlStateManager.enableAlpha()
+            GlStateManager.disableBlend()
+            GlStateManager.disableLighting()
+
             GL11.glPopMatrix()
         }
     }
