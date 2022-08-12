@@ -5,6 +5,9 @@ import net.ccbluex.liquidbounce.features.command.Command;
 import net.ccbluex.liquidbounce.features.special.Setting;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class SettingsCommand extends Command {
@@ -60,6 +63,20 @@ public class SettingsCommand extends Command {
                     chat(setting.getName());
                 }
                 break;
+            case "import":
+                if (args.length < 3) {
+                    chatSyntax("settings import <name>");
+                    return;
+                }
+                Path settingsDir = Paths.get(LiquidBounce.fileManager.settingsDir.getAbsolutePath(),args[2]);
+                File settingsDirFile = settingsDir.toFile();
+                if (settingsDirFile.exists()) {
+                    LiquidBounce.settingManager.addSetting(new Setting(args[2],false));
+                    chat("imported setting " + args[2] + " successful!");
+                } else {
+                    chat("This settings is not exist!");
+                }
+
         }
     }
 
