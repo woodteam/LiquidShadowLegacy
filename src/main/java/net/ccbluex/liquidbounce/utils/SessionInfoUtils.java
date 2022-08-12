@@ -97,7 +97,9 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
                     loseChatTimer.reset();
                 }
                 if (message.toLowerCase().contains("Victory".toLowerCase()) && !message.toLowerCase().contains("[".toLowerCase())) {
-                    wins++;
+                    if (loseTitleTimer.hasTimePassed(3000)) {
+                        wins++;
+                    }
                 }
             }
         }
