@@ -50,6 +50,7 @@ class CommandManager {
         registerCommand(HideCommand())
         registerCommand(XrayCommand())
         registerCommand(SettingsCommand())
+        registerCommand(AutoDisableCommand())
     }
 
     /**

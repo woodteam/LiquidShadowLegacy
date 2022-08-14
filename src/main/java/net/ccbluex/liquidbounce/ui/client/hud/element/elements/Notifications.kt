@@ -104,6 +104,10 @@ class Notification(private val message: String,private val notificationType: Not
                 RenderUtils.drawRect(-x + stay, -y, -x, -y + -20F, Color(255,150,150,backgroundAlpha).rgb)
             }
         }
+        else if (notificationType is WarningType) {
+            RenderUtils.drawRect(-x + 8 + textLength, -y, -x, -y + -20F, Color(255,195,0,backgroundAlpha).rgb)
+            RenderUtils.drawRect(-x + stay, -y, -x, -y + -20F, Color(255,235,45,backgroundAlpha).rgb)
+        }
 
         Fonts.font35.drawString(message, -x + 4, -y + -14F, Color(50,50,50).rgb)
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
@@ -147,6 +151,8 @@ class Notification(private val message: String,private val notificationType: Not
 open class NotificationType
 
 class NormalType : net.ccbluex.liquidbounce.ui.client.hud.element.elements.NotificationType()
+
+class WarningType : NotificationType()
 
 class ToggleType(private val moduleName:String,private val moduleState:Boolean) : NotificationType() {
     fun getModuleName() : String { return moduleName }

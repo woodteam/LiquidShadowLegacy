@@ -10,6 +10,7 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.ccbluex.liquidbounce.LiquidBounce;
+import net.ccbluex.liquidbounce.features.module.AutoDisableMode;
 import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.file.FileConfig;
 import net.ccbluex.liquidbounce.file.FileManager;
@@ -54,6 +55,14 @@ public class ModulesConfig extends FileConfig {
 
                 if(jsonModule.has("Array"))
                     module.setArray(jsonModule.get("Array").getAsBoolean());
+                if (jsonModule.has("AutoDisableMode")) {
+                    module.setAutoDisableMode(AutoDisableMode.NONE);
+                    if (jsonModule.get("AutoDisableMode").getAsString().equalsIgnoreCase("FLAG")) {
+                        module.setAutoDisableMode(AutoDisableMode.FLAG);
+                    } else if (jsonModule.get("AutoDisableMode").getAsString().equalsIgnoreCase("DEATH")) {
+                        module.setAutoDisableMode(AutoDisableMode.DEATH);
+                    }
+                }
             }
         }
     }
@@ -72,6 +81,13 @@ public class ModulesConfig extends FileConfig {
             jsonMod.addProperty("State", module.getState());
             jsonMod.addProperty("KeyBind", module.getKeyBind());
             jsonMod.addProperty("Array", module.getArray());
+            String autoDisableMode = "NONE";
+            if (module.getAutoDisableMode() == AutoDisableMode.FLAG) {
+                autoDisableMode = "FLAG";
+            } else if (module.getAutoDisableMode() == AutoDisableMode.DEATH) {
+                autoDisableMode = "DEATH";
+            }
+            jsonMod.addProperty("AutoDisableMode", autoDisableMode);
             jsonObject.add(module.getName(), jsonMod);
         }
 

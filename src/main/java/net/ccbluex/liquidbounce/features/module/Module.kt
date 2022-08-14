@@ -36,6 +36,7 @@ open class Module : MinecraftInstance(), Listenable {
             if (!LiquidBounce.isStarting)
                 LiquidBounce.fileManager.saveConfig(LiquidBounce.fileManager.modulesConfig)
         }
+    var autoDisableMode = AutoDisableMode.NONE
     private val canEnable: Boolean
 
     var slideStep = 0F
@@ -49,6 +50,7 @@ open class Module : MinecraftInstance(), Listenable {
         keyBind = moduleInfo.keyBind
         array = moduleInfo.array
         canEnable = moduleInfo.canEnable
+        autoDisableMode = moduleInfo.autoDisableMode
     }
 
     // Current state of module
