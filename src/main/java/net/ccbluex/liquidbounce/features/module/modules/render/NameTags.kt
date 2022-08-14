@@ -21,6 +21,7 @@ import net.ccbluex.liquidbounce.utils.render.RenderUtils.quickDrawRect
 import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
 import net.ccbluex.liquidbounce.value.FontValue
+import net.ccbluex.liquidbounce.value.IntegerValue
 import net.minecraft.client.renderer.GlStateManager.*
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
@@ -39,6 +40,14 @@ class NameTags : Module() {
     private val borderValue = BoolValue("Border", true)
     private val scaleValue = FloatValue("Scale", 1F, 1F, 4F)
     private val botValue = BoolValue("Bots", true)
+    private val backgroundRValue = IntegerValue("BackgroundR",25,0,255)
+    private val backgroundGValue = IntegerValue("BackgroundG",25,0,255)
+    private val backgroundBValue = IntegerValue("BackgroundB",25,0,255)
+    private val backgroundAlphaValue = IntegerValue("BackgroundAlpha",125,0,255)
+    private val borderRValue = IntegerValue("BorderR",65,0,255)
+    private val borderGValue = IntegerValue("BorderG",215,0,255)
+    private val borderBValue = IntegerValue("BorderB",255,0,255)
+    private val borderAlphaValue = IntegerValue("BorderAlpha",175,0,255)
 
     @EventTarget
     fun onRender3D(event: Render3DEvent) {
@@ -129,9 +138,9 @@ class NameTags : Module() {
         glEnable(GL_BLEND)
 
         if (borderValue.get())
-            quickDrawBorderedRect(-width - 2F, -2F, width + 4F, fontRenderer.FONT_HEIGHT + 2F, 2F, Color(255, 255, 255, 90).rgb, Integer.MIN_VALUE)
+            quickDrawBorderedRect(-width - 2F, -2F, width + 4F, fontRenderer.FONT_HEIGHT + 2F, 2F, Color(borderRValue.get(), borderGValue.get(), borderBValue.get(), borderAlphaValue.get()).rgb, Color(backgroundRValue.get(),backgroundGValue.get(),backgroundBValue.get(),backgroundAlphaValue.get()).rgb)
         else
-            quickDrawRect(-width - 2F, -2F, width + 4F, fontRenderer.FONT_HEIGHT + 2F, Integer.MIN_VALUE)
+            quickDrawRect(-width - 2F, -2F, width + 4F, fontRenderer.FONT_HEIGHT + 2F, Color(backgroundRValue.get(),backgroundGValue.get(),backgroundBValue.get(),backgroundAlphaValue.get()).rgb)
 
         glEnable(GL_TEXTURE_2D)
 
