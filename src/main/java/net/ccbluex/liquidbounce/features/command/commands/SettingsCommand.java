@@ -83,7 +83,6 @@ public class SettingsCommand extends Command {
     @NotNull
     @Override
     public List<String> tabComplete(@NotNull String[] args) {
-        System.out.println(args[0]);
         if (args.length == 1) {
             List<String> cmds = Arrays.asList("load","save","list");
             List<String> s = new ArrayList<>();

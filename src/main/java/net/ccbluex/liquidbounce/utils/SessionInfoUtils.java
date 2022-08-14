@@ -1,5 +1,6 @@
 package net.ccbluex.liquidbounce.utils;
 
+import net.ccbluex.liquidbounce.LiquidBounce;
 import net.ccbluex.liquidbounce.event.*;
 import net.ccbluex.liquidbounce.utils.timer.MSTimer;
 import net.minecraft.network.handshake.client.C00Handshake;
@@ -30,7 +31,7 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
     @EventTarget
     public void onUpdate(UpdateEvent updateEvent) {
         if (mc.thePlayer.isDead && !deathAdded) {
-            deaths++;
+            LiquidBounce.eventManager.callEvent(new PlayerDeathEvent());
             deathAdded = true;
         }
         if (deathAdded && !mc.thePlayer.isDead){
@@ -74,10 +75,10 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
             if (packetEvent.getPacket() instanceof S45PacketTitle) {
                 String message = ((S45PacketTitle) packetEvent.getPacket()).getMessage().getFormattedText();
                 if (message.toLowerCase().contains("Wasted".toLowerCase())) {
-                    deaths++;
+                    LiquidBounce.eventManager.callEvent(new PlayerDeathEvent());
                     loseTitleTimer.reset();
                     if (!loseChatTimer.hasTimePassed(1000) && addedLoseTimer.hasTimePassed(10000)) {
-                        loses++;
+                        LiquidBounce.eventManager.callEvent(new LoseGameEvent());
                         addedLoseTimer.reset();
                     }
                 }
@@ -91,14 +92,14 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
                 }
                 if (message.toLowerCase().contains("§".toLowerCase()) && message.toLowerCase().contains("for the game.".toLowerCase()) && !message.toLowerCase().contains("[".toLowerCase()) && !message.contains("»")) {
                     if (!loseTitleTimer.hasTimePassed(1000) && addedLoseTimer.hasTimePassed(10000)) {
-                        loses++;
+                        LiquidBounce.eventManager.callEvent(new LoseGameEvent());
                         addedLoseTimer.reset();
                     }
                     loseChatTimer.reset();
                 }
                 if (message.toLowerCase().contains("Victory".toLowerCase()) && !message.toLowerCase().contains("[".toLowerCase())) {
                     if (loseTitleTimer.hasTimePassed(3000)) {
-                        wins++;
+                        LiquidBounce.eventManager.callEvent(new WinGameEvent());
                     }
                 }
             }
@@ -106,6 +107,21 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
         if (packetEvent.getPacket() instanceof C00Handshake) {
             reset();
         }
+    }
+
+    @EventTarget
+    public void onDeath(PlayerDeathEvent event) {
+        deaths++;
+    }
+
+    @EventTarget
+    public void onWin(WinGameEvent event) {
+        wins++;
+    }
+
+    @EventTarget
+    public void onLose(LoseGameEvent event) {
+        loses++;
     }
 
     @Override

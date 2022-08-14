@@ -185,3 +185,9 @@ class DisconnectEvent : Event()
 class QuitServerEvent : Event()
 
 class ConnectServerEvent(val serverData: ServerData) : Event()
+
+class PlayerDeathEvent : Event()
+
+class WinGameEvent : Event()
+
+class LoseGameEvent : Event()
