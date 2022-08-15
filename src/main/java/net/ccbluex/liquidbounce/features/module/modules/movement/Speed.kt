@@ -82,9 +82,9 @@ class Speed : Module() {
                 onEnable()
         }
     }
+    val timerValue = FloatValue("Timer",1.0f,0.1f,5.0f)
     val customSpeedValue = FloatValue("CustomSpeed", 1.6f, 0.2f, 2f)
     val customYValue = FloatValue("CustomY", 0f, 0f, 4f)
-    val customTimerValue = FloatValue("CustomTimer", 1f, 0.1f, 2f)
     val customStrafeValue = BoolValue("CustomStrafe", true)
     val resetXZValue = BoolValue("CustomResetXZ", false)
     val resetYValue = BoolValue("CustomResetY", false)
@@ -92,6 +92,7 @@ class Speed : Module() {
     val aacGroundTimerValue = FloatValue("AACGround-Timer", 3f, 1.1f, 10f)
     val cubecraftPortLengthValue = FloatValue("CubeCraft-PortLength", 1f, 0.1f, 2f)
     val mineplexGroundSpeedValue = FloatValue("MineplexGround-Speed", 0.5f, 0.1f, 1f)
+
 
     @EventTarget
     fun onUpdate(event: UpdateEvent?) {
@@ -114,8 +115,10 @@ class Speed : Module() {
         if (thePlayer.isSneaking || event.eventState != EventState.PRE)
             return
 
-        if (MovementUtils.isMoving)
+        if (MovementUtils.isMoving) {
             thePlayer.isSprinting = true
+            mc.timer.timerSpeed = timerValue.get()
+        }
 
         mode?.onMotion()
     }
