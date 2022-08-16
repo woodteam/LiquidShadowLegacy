@@ -16,18 +16,24 @@ import net.ccbluex.liquidbounce.ui.client.clickgui.style.Style;
 import net.ccbluex.liquidbounce.ui.client.clickgui.style.styles.SlowlyStyle;
 import net.ccbluex.liquidbounce.ui.client.hud.designer.GuiHudDesigner;
 import net.ccbluex.liquidbounce.ui.font.AWTFontRenderer;
+import net.ccbluex.liquidbounce.ui.font.Fonts;
 import net.ccbluex.liquidbounce.utils.EntityUtils;
 import net.ccbluex.liquidbounce.utils.render.RenderUtils;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +46,9 @@ public class ClickGui extends GuiScreen {
     private int mouseY;
 
     private int scroll;
+
+    public String searchTexts = "";
+    private boolean searchInput;
 
     public ClickGui() {
         final int width = 100;
@@ -215,6 +224,8 @@ public class ClickGui extends GuiScreen {
         // Enable DisplayList optimization
         AWTFontRenderer.Companion.setAssumeNonVolatile(true);
 
+        ClickGUI clickGUI = ((ClickGUI) Objects.requireNonNull(LiquidBounce.moduleManager.getModule(ClickGUI.class)));
+
         final double scale = ((ClickGUI) Objects.requireNonNull(LiquidBounce.moduleManager.getModule(ClickGUI.class))).scaleValue.get();
         GlStateManager.translate(0,scroll,0);
         mouseY-=scroll;
@@ -226,6 +237,13 @@ public class ClickGui extends GuiScreen {
         this.mouseY = mouseY;
 
         GL11.glScaled(scale, scale, scale);
+
+        RenderUtils.drawRect(width / 2 - 50,5,width / 2 + 50,20,new Color(175,175,175,100).getRGB());
+        Fonts.font35.drawString(searchTexts,width / 2 - 45,10,-1);
+        if (searchInput) {
+            RenderUtils.drawRect(width / 2 - 45 + Fonts.font35.getStringWidth(searchTexts) + 1,9,width / 2 - 45 + Fonts.font35.getStringWidth(searchTexts) + 3,7 + Fonts.font35.FONT_HEIGHT,-1);
+        }
+        Fonts.font35.drawCenteredString("Search",width / 2,22,new Color(ClickGUI.colorRedValue.get(), ClickGUI.colorGreenValue.get(), ClickGUI.colorBlueValue.get()).getRGB());
 
         for (final Panel panel : panels) {
             panel.updateFade(RenderUtils.deltaTime);
@@ -242,8 +260,6 @@ public class ClickGui extends GuiScreen {
                 }
             }
         }
-
-
 
         GlStateManager.disableLighting();
         RenderHelper.disableStandardItemLighting();
@@ -276,6 +292,8 @@ public class ClickGui extends GuiScreen {
         mouseX /= scale;
         mouseY /= scale;
 
+        searchInput = mouseX > width / 2 - 50 && mouseX < width / 2 + 50 && mouseY > 5 && mouseY < 20;
+
         for (int i = panels.size() - 1; i >= 0; i--) {
             if (panels.get(i).mouseClicked(mouseX, mouseY, mouseButton)){
                 break;
@@ -302,6 +320,18 @@ public class ClickGui extends GuiScreen {
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void keyTyped(char p_keyTyped_1_, int p_keyTyped_2_) throws IOException {
+        if (ChatAllowedCharacters.isAllowedCharacter(p_keyTyped_1_) && searchInput && Fonts.font35.getStringWidth(searchTexts + p_keyTyped_1_) < 90) {
+            searchTexts = searchTexts + p_keyTyped_1_;
+        }
+        if (p_keyTyped_2_ == Keyboard.KEY_BACK && !searchTexts.isEmpty()) {
+            searchTexts = searchTexts.substring(0,searchTexts.length() - 1);
+        }
+
+        super.keyTyped(p_keyTyped_1_, p_keyTyped_2_);
     }
 
     @Override
