@@ -68,7 +68,13 @@ public class LiquidBounceStyle extends Style {
     public void drawModuleElement(int mouseX, int mouseY, ModuleElement moduleElement) {
         int guiColor = ClickGUI.generateColor().getRGB();
         GlStateManager.resetColor();
-        Fonts.font35.drawString(moduleElement.getDisplayName(), (int) (moduleElement.getX() - (Fonts.font35.getStringWidth(moduleElement.getDisplayName()) - 100.0f) / 2.0f), moduleElement.getY() + 6, moduleElement.getModule().getState() ? guiColor : Integer.MAX_VALUE);
+
+        boolean beenSearched = LiquidBounce.clickGui.searchTexts.isEmpty() || moduleElement.getDisplayName().toLowerCase().startsWith(LiquidBounce.clickGui.searchTexts.toLowerCase());
+        if (beenSearched) {
+            Fonts.font35.drawString(moduleElement.getDisplayName(), (int) (moduleElement.getX() - (Fonts.font35.getStringWidth(moduleElement.getDisplayName()) - 100.0f) / 2.0f), moduleElement.getY() + 6, moduleElement.getModule().getState() ? guiColor : Integer.MAX_VALUE);
+        } else {
+            Fonts.font35.drawString(moduleElement.getDisplayName(), (int) (moduleElement.getX() - (Fonts.font35.getStringWidth(moduleElement.getDisplayName()) - 100.0f) / 2.0f), moduleElement.getY() + 6, Color.GRAY.getRGB());
+        }
 
         final List<Value<?>> moduleValues = moduleElement.getModule().getValues();
 
