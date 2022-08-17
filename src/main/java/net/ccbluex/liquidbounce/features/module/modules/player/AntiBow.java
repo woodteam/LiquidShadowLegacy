@@ -7,8 +7,6 @@ import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
 import net.ccbluex.liquidbounce.features.module.modules.world.Scaffold;
-import net.ccbluex.liquidbounce.features.module.modules.world.Tower;
-import net.ccbluex.liquidbounce.utils.MovementUtils;
 import net.ccbluex.liquidbounce.utils.RotationUtils;
 import net.ccbluex.liquidbounce.utils.VecRotation;
 import net.ccbluex.liquidbounce.value.BoolValue;
@@ -25,7 +23,6 @@ public class AntiBow extends Module {
     private final FloatValue distanceValue = new FloatValue("Distance",40,10,60);
     private final IntegerValue moveTicks = new IntegerValue("MoveTicks",40,1,100);
     private final BoolValue autoScaffoldValue = new BoolValue("AutoScaffold",true);
-    private final BoolValue autoTowerValue = new BoolValue("AutoTower",false);
 
     private final List<Integer> hidedArrows = new ArrayList<>();
     private final List<Integer> ignoredArrows = new ArrayList<>();
@@ -51,9 +48,6 @@ public class AntiBow extends Module {
                     mc.thePlayer.rotationPitch = rotation.getRotation().getPitch();
                     if (autoScaffoldValue.get()) {
                         LiquidBounce.moduleManager.getModule(Scaffold.class).setState(true);
-                    }
-                    if (autoTowerValue.get()) {
-                        LiquidBounce.moduleManager.getModule(Tower.class).setState(true);
                     }
                     EntityArrow arrow = ((EntityArrow) entity);
 

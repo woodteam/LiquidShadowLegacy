@@ -8,7 +8,6 @@ import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
 import net.ccbluex.liquidbounce.features.module.modules.world.Scaffold;
-import net.ccbluex.liquidbounce.features.module.modules.world.Tower;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.NormalType;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification;
 import net.ccbluex.liquidbounce.value.IntegerValue;
@@ -40,7 +39,6 @@ public class AntiStuck extends Module {
         }
         if (flags >= maxFlagsValue.get()) {
             LiquidBounce.moduleManager.getModule(Freeze.class).setState(true);
-            LiquidBounce.moduleManager.getModule(Tower.class).setState(false);
             LiquidBounce.moduleManager.getModule(Scaffold.class).setState(false);
             LiquidBounce.hud.addNotification(new Notification("Trying to unstuck you...",new NormalType()));
             unStucking = true;
@@ -49,7 +47,6 @@ public class AntiStuck extends Module {
         }
         if (unStucking) {
             LiquidBounce.moduleManager.getModule(Freeze.class).setState(true);
-            LiquidBounce.moduleManager.getModule(Tower.class).setState(false);
             LiquidBounce.moduleManager.getModule(Scaffold.class).setState(false);
         }
         ticks1++;

@@ -65,7 +65,6 @@ class ModuleManager : Listenable {
                 ChestStealer::class.java,
                 Scaffold::class.java,
                 CivBreak::class.java,
-                Tower::class.java,
                 FastBreak::class.java,
                 FastPlace::class.java,
                 ESP::class.java,
