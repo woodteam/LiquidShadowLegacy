@@ -6,7 +6,6 @@ import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
 import net.ccbluex.liquidbounce.features.module.modules.world.Scaffold;
-import net.ccbluex.liquidbounce.features.module.modules.world.Tower;
 import net.ccbluex.liquidbounce.value.BoolValue;
 import net.ccbluex.liquidbounce.value.FloatValue;
 import net.ccbluex.liquidbounce.value.IntegerValue;
@@ -21,7 +20,6 @@ public class AntiVoid extends Module {
     private final FloatValue maxFallDistanceValue = new FloatValue("MaxFallDistance",10,5,20);
     private final IntegerValue coolDownTicksValue = new IntegerValue("CoolDownTicks",20,5,60);
     private final BoolValue autoScaffoldValue = new BoolValue("AutoScaffold",true);
-    private final BoolValue autoTowerValue = new BoolValue("AutoTower",false);
     private final FloatValue motionFlag_MotionYValue = new FloatValue("MotionFlag-MotionY",2,1,5);
 
     private int ticks;
@@ -43,9 +41,6 @@ public class AntiVoid extends Module {
                 mc.thePlayer.motionY = motionFlag_MotionYValue.get();
                 if (autoScaffoldValue.get()) {
                     LiquidBounce.moduleManager.getModule(Scaffold.class).setState(true);
-                }
-                if (autoTowerValue.get()) {
-                    LiquidBounce.moduleManager.getModule(Tower.class).setState(true);
                 }
                 coolDown = true;
             }
