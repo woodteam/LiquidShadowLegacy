@@ -37,7 +37,8 @@ open class HUD : MinecraftInstance() {
                 Radar::class.java,
                 SpeedGraph::class.java,
             Inventory::class.java,
-            SessionInfo::class.java
+            SessionInfo::class.java,
+            SelfInfo::class.java
         )
 
         /**
