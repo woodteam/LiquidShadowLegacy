@@ -7,14 +7,13 @@ package net.ccbluex.liquidbounce.injection.forge.mixins.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.ccbluex.liquidbounce.LiquidBounce;
-import net.ccbluex.liquidbounce.event.PlayerKillEntityEvent;
+import net.ccbluex.liquidbounce.event.KillEvent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,6 +54,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase {
 
     @Inject(method = "onKillEntity",at = @At("TAIL"))
     public void onKillEntity(EntityLivingBase p_onKillEntity_1_, CallbackInfo callbackInfo) {
-        LiquidBounce.eventManager.callEvent(new PlayerKillEntityEvent(p_onKillEntity_1_));
+        if (p_onKillEntity_1_ instanceof EntityPlayer) {
+            LiquidBounce.eventManager.callEvent(new KillEvent((EntityPlayer) p_onKillEntity_1_));
+        }
     }
 }
