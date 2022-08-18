@@ -55,7 +55,7 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
     }
 
     @EventTarget
-    public void onKill(PlayerKillEntityEvent playerKillEntityEvent) {
+    public void onKill(KillEvent killEvent) {
         kills++;
     }
 
@@ -87,7 +87,7 @@ public class SessionInfoUtils extends MinecraftInstance implements Listenable {
                 String message = ((S02PacketChat) packetEvent.getPacket()).getChatComponent().getFormattedText();
                 if ((message.toLowerCase().contains("was slain by".toLowerCase()) || message.toLowerCase().contains("was thrown out of the world by".toLowerCase()) || message.toLowerCase().contains("hit the ground too hard whilst trying to escape".toLowerCase())) && message.toLowerCase().contains(mc.session.getUsername().toLowerCase())) {
                     if ((message.split(" ")[message.split(" ").length - 1].toLowerCase().contains(mc.session.getUsername().toLowerCase())) && !message.contains("»") && !message.contains(":")) {
-                        kills++;
+                        LiquidBounce.eventManager.callEvent(new KillEvent(mc.theWorld.getPlayerEntityByName(message.split(" ")[2].replace("§","").substring(2))));
                     }
                 }
                 if (message.toLowerCase().contains("§".toLowerCase()) && message.toLowerCase().contains("for the game.".toLowerCase()) && !message.toLowerCase().contains("[".toLowerCase()) && !message.contains("»")) {

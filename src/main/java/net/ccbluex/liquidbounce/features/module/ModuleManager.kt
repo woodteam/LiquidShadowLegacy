@@ -184,7 +184,8 @@ class ModuleManager : Listenable {
             AntiStaff::class.java,
             AntiFireBall::class.java,
             AntiBow::class.java,
-            EnemyWarning::class.java
+            EnemyWarning::class.java,
+            AutoL::class.java
         )
 
         registerModule(NoScoreboard)
