@@ -48,6 +48,7 @@ import net.minecraft.util.Vec3
 import org.lwjgl.input.Keyboard
 import org.lwjgl.opengl.GL11
 import java.awt.Color
+import java.util.Random
 import kotlin.math.*
 
 @ModuleInfo(
@@ -105,7 +106,7 @@ class Scaffold : Module() {
 
     // Rotation Options
     private val strafeMode = ListValue("Strafe", arrayOf("Off", "AAC"), "Off")
-    private val rotationsValue = BoolValue("Rotations", true)
+    private val rotationsValue = ListValue("Rotations", arrayOf("Off","Default","Down"), "Default")
     private val silentRotationValue = BoolValue("SilentRotation", true)
     private val keepRotationValue = BoolValue("KeepRotation", true)
     private val keepLengthValue = IntegerValue("KeepRotationLength", 0, 0, 20)
@@ -374,7 +375,7 @@ class Scaffold : Module() {
         update()
         val rotation = lockRotation ?: return
 
-        if (rotationsValue.get() && (keepRotationValue.get() || !lockRotationTimer.hasTimePassed(keepLengthValue.get()))) {
+        if (rotationsValue.get().equals("Default",true) && (keepRotationValue.get() || !lockRotationTimer.hasTimePassed(keepLengthValue.get()))) {
             if (targetPlace == null) {
                 rotation.yaw = wrapAngleTo180_float((rotation.yaw / 45f).roundToInt() * 45f)
             }
@@ -404,7 +405,7 @@ class Scaffold : Module() {
             val eventState = event.eventState
 
             // Lock Rotation
-            if (rotationsValue.get() && (keepRotationValue.get() || !lockRotationTimer.hasTimePassed(keepLengthValue.get())) && lockRotation != null && strafeMode.get()
+            if (rotationsValue.get().equals("Default",true) && (keepRotationValue.get() || !lockRotationTimer.hasTimePassed(keepLengthValue.get())) && lockRotation != null && strafeMode.get()
                     .equals("Off", true)
             ) {
                 setRotation(lockRotation!!)
@@ -413,8 +414,12 @@ class Scaffold : Module() {
                 }
             }
 
+            if (rotationsValue.get().equals("Down",true)) {
+                setRotation(Rotation(mc.thePlayer.rotationYaw,90F))
+            }
+
             // Face block
-            if ((facesBlock || !rotationsValue.get()) && placeModeValue.get().equals(eventState.stateName, true)) {
+            if ((facesBlock || !rotationsValue.get().equals("Default",true)) && placeModeValue.get().equals(eventState.stateName, true)) {
                 place()
             }
 
@@ -431,8 +436,12 @@ class Scaffold : Module() {
             val thePlayer = mc.thePlayer ?: return
 
             // Lock Rotation
-            if (rotationsValue.get() && keepRotationValue.get() && lockRotation != null) {
+            if (rotationsValue.get().equals("Default",true) && keepRotationValue.get() && lockRotation != null) {
                 RotationUtils.setTargetRotation(lockRotation)
+            }
+
+            if (rotationsValue.get().equals("Down",true)) {
+                setRotation(Rotation(mc.thePlayer.rotationYaw,90F))
             }
 
             mc.timer.timerSpeed = timerValue.get()
@@ -463,7 +472,7 @@ class Scaffold : Module() {
                     }
                     val blockPos = BlockPos(thePlayer.posX, thePlayer.posY - 1.0, thePlayer.posZ)
                     if (blockPos.getBlock() == Blocks.air) {
-                        if (search(blockPos,false) && rotationsValue.get()) {
+                        if (search(blockPos,false) && rotationsValue.get().equals("Default",true)) {
                             val vecRotation = RotationUtils.faceBlock(blockPos)
                             if (vecRotation != null) {
                                 RotationUtils.setTargetRotation(vecRotation.rotation)
@@ -952,7 +961,7 @@ class Scaffold : Module() {
                 }
             }
             if (placeRotation == null) return false
-            if (rotationsValue.get()) {
+            if (rotationsValue.get().equals("Default",true)) {
                 RotationUtils.setTargetRotation(placeRotation.rotation, 0)
                 lockRotation = placeRotation.rotation
             }
@@ -1057,7 +1066,7 @@ class Scaffold : Module() {
             if (placeRotation == null) {
                 return false
             }
-            if (rotationsValue.get()) {
+            if (rotationsValue.get().equals("Default",true)) {
                 if (minTurnSpeedValue.get() < 180) {
                     val limitedRotation = RotationUtils.limitAngleChange(
                         RotationUtils.serverRotation,
