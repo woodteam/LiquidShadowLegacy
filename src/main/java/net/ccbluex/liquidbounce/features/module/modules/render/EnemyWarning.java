@@ -13,8 +13,10 @@ import net.ccbluex.liquidbounce.utils.render.RenderUtils;
 import net.ccbluex.liquidbounce.value.FloatValue;
 import net.ccbluex.liquidbounce.value.IntegerValue;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -44,6 +46,8 @@ public class EnemyWarning extends Module {
 
                     RenderUtils.drawRect(0,0,widthValue.get(),height,new Color(colorRValue.get(),colorGValue.get(),colorBValue.get(),colorAlphaValue.get()).getRGB());
                     RenderUtils.drawRect(width - widthValue.get(),0,width,height,new Color(colorRValue.get(),colorGValue.get(),colorBValue.get(),colorAlphaValue.get()).getRGB());
+
+                    GL11.glColor4f(1,1,1,1);
 
                     foundEnemy = true;
                 }
