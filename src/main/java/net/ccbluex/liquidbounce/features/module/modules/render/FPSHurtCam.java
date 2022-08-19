@@ -11,6 +11,7 @@ import net.ccbluex.liquidbounce.value.FloatValue;
 import net.ccbluex.liquidbounce.value.IntegerValue;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -29,6 +30,7 @@ public class FPSHurtCam extends Module {
             int width = scaledResolution.getScaledWidth();
             int height = scaledResolution.getScaledHeight();;
             RenderUtils.drawRect(0,0,width,heightValue.get(),new Color(rValue.get(),gValue.get(),bValue.get(),alphaValue.get()).getRGB());
+            GL11.glColor4f(1,1,1,1);
         }
     }
 }
