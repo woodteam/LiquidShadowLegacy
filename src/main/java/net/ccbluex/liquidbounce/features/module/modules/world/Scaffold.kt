@@ -106,7 +106,7 @@ class Scaffold : Module() {
 
     // Rotation Options
     private val strafeMode = ListValue("Strafe", arrayOf("Off", "AAC"), "Off")
-    private val rotationsValue = ListValue("Rotations", arrayOf("Off","Default","Down"), "Default")
+    private val rotationsValue = ListValue("Rotations", arrayOf("Off","Default","Down","Back"), "Default")
     private val silentRotationValue = BoolValue("SilentRotation", true)
     private val keepRotationValue = BoolValue("KeepRotation", true)
     private val keepLengthValue = IntegerValue("KeepRotationLength", 0, 0, 20)
@@ -418,6 +418,10 @@ class Scaffold : Module() {
                 setRotation(Rotation(mc.thePlayer.rotationYaw,90F))
             }
 
+            if (rotationsValue.get().equals("Back",true)) {
+                setRotation(Rotation(mc.thePlayer.rotationYaw - 180F,80F))
+            }
+
             // Face block
             if ((facesBlock || !rotationsValue.get().equals("Default",true)) && placeModeValue.get().equals(eventState.stateName, true)) {
                 place()
@@ -442,6 +446,10 @@ class Scaffold : Module() {
 
             if (rotationsValue.get().equals("Down",true)) {
                 setRotation(Rotation(mc.thePlayer.rotationYaw,90F))
+            }
+
+            if (rotationsValue.get().equals("Back",true)) {
+                setRotation(Rotation(mc.thePlayer.rotationYaw - 180F,80F))
             }
 
             mc.timer.timerSpeed = timerValue.get()
