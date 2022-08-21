@@ -75,7 +75,8 @@ public class Spammer extends Module {
     @EventTarget
     public void onPacket(PacketEvent event) {
         if (event.getPacket() instanceof S02PacketChat) {
-            if (lastMessage.contains((ServerUtils.getRemoteIp().toLowerCase().contains("Mineland".toLowerCase()) || ServerUtils.getRemoteIp().toLowerCase().contains("join-ml".toLowerCase())) && lastMessage.charAt(0) == '!' ? lastMessage.substring(1) : lastMessage) && hideMessageValue.get()) {
+            String message = ((S02PacketChat) event.getPacket()).getChatComponent().getFormattedText();
+            if (message.contains((ServerUtils.getRemoteIp().toLowerCase().contains("Mineland".toLowerCase()) || ServerUtils.getRemoteIp().toLowerCase().contains("join-ml".toLowerCase())) && lastMessage.charAt(0) == '!' ? lastMessage.substring(1) : lastMessage) && hideMessageValue.get()) {
                 event.cancelEvent();
                 if (hideNotificationValue.get()) {
                     LiquidBounce.hud.addNotification(new Notification("hided a spam message " + lastMessage,new NormalType()));
