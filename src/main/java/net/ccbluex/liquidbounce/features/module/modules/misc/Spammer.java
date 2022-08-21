@@ -7,16 +7,21 @@ package net.ccbluex.liquidbounce.features.module.modules.misc;
 
 import net.ccbluex.liquidbounce.LiquidBounce;
 import net.ccbluex.liquidbounce.event.EventTarget;
+import net.ccbluex.liquidbounce.event.PacketEvent;
 import net.ccbluex.liquidbounce.event.UpdateEvent;
 import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
+import net.ccbluex.liquidbounce.ui.client.hud.element.elements.NormalType;
+import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification;
+import net.ccbluex.liquidbounce.utils.ServerUtils;
 import net.ccbluex.liquidbounce.utils.misc.RandomUtils;
 import net.ccbluex.liquidbounce.utils.timer.MSTimer;
 import net.ccbluex.liquidbounce.utils.timer.TimeUtils;
 import net.ccbluex.liquidbounce.value.BoolValue;
 import net.ccbluex.liquidbounce.value.IntegerValue;
 import net.ccbluex.liquidbounce.value.TextValue;
+import net.minecraft.network.play.server.S02PacketChat;
 
 import java.util.Random;
 
@@ -49,15 +54,33 @@ public class Spammer extends Module {
     private final TextValue messageValue = new TextValue("Message", LiquidBounce.CLIENT_NAME + " Client | liquidbounce(.net) | CCBlueX on yt");
     private final BoolValue customValue = new BoolValue("Custom", false);
 
+    private final BoolValue hideMessageValue = new BoolValue("HideMessage",true);
+    private final BoolValue hideNotificationValue = new BoolValue("HideNotification",true);
+
     private final MSTimer msTimer = new MSTimer();
     private long delay = TimeUtils.randomDelay(minDelayValue.get(), maxDelayValue.get());
+
+    private String lastMessage = RandomUtils.randomString(10);
 
     @EventTarget
     public void onUpdate(UpdateEvent event) {
         if(msTimer.hasTimePassed(delay)) {
-            mc.thePlayer.sendChatMessage(customValue.get() ? replace(messageValue.get()) : messageValue.get() + " >" + RandomUtils.randomString(5 + new Random().nextInt(5)) + "<");
+            lastMessage = customValue.get() ? replace(messageValue.get()) : messageValue.get() + " >" + RandomUtils.randomString(5 + new Random().nextInt(5)) + "<";
+            mc.thePlayer.sendChatMessage(lastMessage);
             msTimer.reset();
             delay = TimeUtils.randomDelay(minDelayValue.get(), maxDelayValue.get());
+        }
+    }
+
+    @EventTarget
+    public void onPacket(PacketEvent event) {
+        if (event.getPacket() instanceof S02PacketChat) {
+            if (lastMessage.contains((ServerUtils.getRemoteIp().toLowerCase().contains("Mineland".toLowerCase()) || ServerUtils.getRemoteIp().toLowerCase().contains("join-ml".toLowerCase())) && lastMessage.charAt(0) == '!' ? lastMessage.substring(1) : lastMessage) && hideMessageValue.get()) {
+                event.cancelEvent();
+                if (hideNotificationValue.get()) {
+                    LiquidBounce.hud.addNotification(new Notification("hided a spam message " + lastMessage,new NormalType()));
+                }
+            }
         }
     }
 
