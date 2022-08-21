@@ -7,6 +7,13 @@ import net.ccbluex.liquidbounce.event.UpdateEvent;
 import net.ccbluex.liquidbounce.features.module.Module;
 import net.ccbluex.liquidbounce.features.module.ModuleCategory;
 import net.ccbluex.liquidbounce.features.module.ModuleInfo;
+import net.ccbluex.liquidbounce.features.module.modules.combat.AutoArmor;
+import net.ccbluex.liquidbounce.features.module.modules.combat.KillAura;
+import net.ccbluex.liquidbounce.features.module.modules.movement.Speed;
+import net.ccbluex.liquidbounce.features.module.modules.player.InventoryCleaner;
+import net.ccbluex.liquidbounce.features.module.modules.world.ChestAura;
+import net.ccbluex.liquidbounce.features.module.modules.world.ChestStealer;
+import net.ccbluex.liquidbounce.features.module.modules.world.Fucker;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.NormalType;
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification;
 import net.ccbluex.liquidbounce.value.BoolValue;
@@ -25,6 +32,14 @@ public class AutoPlay extends Module {
     private final ListValue serverValue = new ListValue("Server",new String[]{"Mineland","LuoHuaXingYu"},"Mineland");
     private final IntegerValue delayValue = new IntegerValue("Delay",5,1,10);
     private final BoolValue autoGGValue = new BoolValue("AutoGG",true);
+
+    private final BoolValue disableKillAuraValue = new BoolValue("DisableKillAura",true);
+    private final BoolValue disableFuckerValue = new BoolValue("DisableFucker",true);
+    private final BoolValue disableSpeedValue = new BoolValue("DisableSpeed",true);
+    private final BoolValue disableChestStealerValue = new BoolValue("DisableChestStealer",true);
+    private final BoolValue disableChestAuraValue = new BoolValue("DisableChestAura",true);
+    private final BoolValue disableInventoryCleanerValue = new BoolValue("DisableInventoryCleaner",true);
+    private final BoolValue disableAutoArmorValue = new BoolValue("DisableAutoArmor",true);
 
     private int ticks;
     private boolean needRestart;
@@ -115,6 +130,22 @@ public class AutoPlay extends Module {
         }
         if (needRestart && ticks == 0) {
             LiquidBounce.hud.addNotification(new Notification("Sending you to next game in " + delayValue.get() + " seconds.",new NormalType()));
+
+            if (disableKillAuraValue.get())
+                LiquidBounce.moduleManager.getModule(KillAura.class).setState(false);
+            if (disableFuckerValue.get())
+                LiquidBounce.moduleManager.getModule(Fucker.class).setState(false);
+            if (disableSpeedValue.get())
+                LiquidBounce.moduleManager.getModule(Speed.class).setState(false);
+            if (disableChestStealerValue.get())
+                LiquidBounce.moduleManager.getModule(ChestStealer.class).setState(false);
+            if (disableChestAuraValue.get())
+                LiquidBounce.moduleManager.getModule(ChestAura.class).setState(false);
+            if (disableInventoryCleanerValue.get())
+                LiquidBounce.moduleManager.getModule(InventoryCleaner.class).setState(false);
+            if (disableAutoArmorValue.get())
+                LiquidBounce.moduleManager.getModule(AutoArmor.class).setState(false);
+
             if (autoGGValue.get()) {
                 mc.thePlayer.sendChatMessage("gg");
             }
