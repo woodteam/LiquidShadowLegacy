@@ -18,6 +18,7 @@ import net.ccbluex.liquidbounce.features.module.modules.movement.speeds.spartan.
 import net.ccbluex.liquidbounce.features.module.modules.movement.speeds.spectre.SpectreBHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speeds.spectre.SpectreLowHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speeds.spectre.SpectreOnGround
+import net.ccbluex.liquidbounce.features.module.modules.movement.speeds.vulcan.VulcanHop
 import net.ccbluex.liquidbounce.utils.MovementUtils
 import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
@@ -68,7 +69,8 @@ class Speed : Module() {
             MineplexGround(),  // Other
             Matrix(),
             SlowHop(),
-            CustomSpeed()
+            CustomSpeed(),
+        VulcanHop()
     )
 
     val modeValue: ListValue = object : ListValue("Mode", modes, "NCPBHop") {
